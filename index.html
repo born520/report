@@ -6,35 +6,57 @@
   <title>모바일 의정보고서</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
-    body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #f0f0f0; }
-    .swiper { width: 100%; height: 100%; }
+     
+    body, html { 
+      margin: 0; padding: 0; width: 100%; height: 100%; 
+      background: #222;  
+      display: flex; justify-content: center; align-items: center;
+    }
+
+     
+    .swiper { 
+      width: 100%; 
+      max-width: 480px;  
+      height: 100vh; 
+      background: #fff;  
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);  
+    }
+
     .swiper-slide {
       width: 100%; height: 100%;
       overflow-y: auto;  
-      background: #fff;
+      -webkit-overflow-scrolling: touch;
     }
-    .content-wrapper { width: 100%; display: flex; flex-direction: column; padding-bottom: 50px; }
-    
+
      
-    img { width: 100%; display: block; border: none; }
+    .content-wrapper { 
+      width: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      padding-top: 40px;  
+      padding-bottom: 60px;  
+    }
     
-     
+    img { width: 100%; display: block; border: none; margin-bottom: 5px; }
+    
     .video-container {
       position: relative; width: 100%; padding-bottom: 56.25%; height: 0; background: #000;
+      margin-bottom: 5px;
     }
     .video-container iframe {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
     }
 
-     
     .text-box {
-      padding: 20px;
+      padding: 25px 20px;
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.7;
       color: #333;
       word-break: break-all;
-      background: #fff;
     }
+
+     
+    .swiper-pagination-bullet-active { background: #4285f4 !important; }
   </style>
 </head>
 <body>
@@ -44,43 +66,36 @@
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report01.jpg" loading="lazy">
-            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report02.jpg" loading="lazy">
-            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report03.jpg" loading="lazy">
-            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report04.jpg" loading="lazy">
-            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report05.jpg" loading="lazy">
-            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report06.jpg" loading="lazy">
-            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report07.jpg" loading="lazy">
-            
                               </div>
       </div>
           <div class="swiper-slide">
@@ -90,7 +105,6 @@
                         src="https://www.youtube.com/embed/rvPVVyl7l98?enablejsapi=1&amp;rel=0&amp;playsinline=1" 
                         allowfullscreen></iframe>
               </div>
-
                                                 <div class="text-box">
                 [5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구&lt;br&gt;제207회 양산시의회 임시회 제1차 본회의 2025-11-05 #양산시의회 #양산시 #송은영              </div>
                               </div>
@@ -102,7 +116,6 @@
                         src="https://www.youtube.com/embed/rvPVVyl7l98?enablejsapi=1&amp;rel=0&amp;playsinline=1" 
                         allowfullscreen></iframe>
               </div>
-
                                                 <div class="text-box">
                 [5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구&lt;br&gt;제207회 양산시의회 임시회 제1차 본회의 2025-11-05 #양산시의회 #양산시 #송은영              </div>
                               </div>
@@ -117,19 +130,30 @@
     direction: 'horizontal',
     loop: false,
     pagination: { el: '.swiper-pagination', clickable: true },
+    
+    
+    mousewheel: {
+      forceToAxis: true, 
+      sensitivity: 1,    
+      releaseOnEdges: true 
+    },
+    
+    
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true,
+    },
+
     on: {
-      
       slideChange: function () {
         stopAllVideos();
       },
     },
   });
 
-  
   function stopAllVideos() {
     const iframes = document.querySelectorAll('.yt-player');
     iframes.forEach(iframe => {
-      
       iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
     });
   }
