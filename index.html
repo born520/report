@@ -2,86 +2,45 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>의정보고서</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
-     
-    body, html { 
-      margin: 0; padding: 0; width: 100%; height: 100%; 
-      background: #f0f0f0; 
-      display: flex; justify-content: center; align-items: center;
-      font-family: sans-serif;
-    }
+    body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #f0f0f0; display: flex; justify-content: center; align-items: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
     
      
     .swiper { 
-      width: 100%; 
-      height: 100%; 
-      position: relative;
-      background: #fff;
-      transition: max-width 0.4s ease, box-shadow 0.4s ease;  
-      margin: 0 auto;
+      width: 100%; height: 100%; position: relative; background: #fff; 
+      transition: max-width 0.4s ease, box-shadow 0.4s ease; margin: 0 auto;
     }
-
+    
      
-    .swiper.mobile-mode {
-      max-width: 480px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.2);
-    }
+    .swiper.mobile-mode { max-width: 480px; box-shadow: 0 0 40px rgba(0,0,0,0.2); }
 
-    .swiper-slide {
-      width: 100%; height: 100%;
-      overflow-y: auto;
-      background: #fff;
-      -webkit-overflow-scrolling: touch;
-    }
-
+    .swiper-slide { width: 100%; height: 100%; overflow-y: auto; background: #fff; -webkit-overflow-scrolling: touch; }
     .content-wrapper { width: 100%; display: flex; flex-direction: column; padding: 0; }
     img { width: 100%; display: block; border: none; }
     
+     
     .yt-card { margin: 15px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #eee; }
-    .yt-title { padding: 15px; font-size: 18px; font-weight: bold; color: #111; border-left: 5px solid #4285f4; }
+    .yt-title { padding: 15px; font-size: 18px; font-weight: bold; color: #111; border-left: 5px solid #4285f4; line-height: 1.4; }
     .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; background: #000; }
     .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     
+     
     .yt-script, .text-box { 
-      padding: 20px; font-size: 15px; line-height: 1.6; color: #333; 
+      padding: 20px; font-size: 15.5px; line-height: 1.7; color: #333; 
       white-space: pre-wrap; word-break: break-all; 
     }
-    .yt-script { background: #fafafa; border-top: 1px solid #eee; }
+    .yt-script { background: #fafafa; border-top: 1px solid #eee; color: #555; }
+    .html-item { width: 100%; }
 
      
-    .swiper-button-next, .swiper-button-prev { color: #4285f4; background: rgba(255,255,255,0.7); width: 44px; height: 44px; border-radius: 50%; }
-    @media (max-width: 768px) { .swiper-button-next, .swiper-button-prev { display: none; } }
+    .swiper-button-next, .swiper-button-prev { color: #4285f4; background: rgba(255,255,255,0.8); width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    @media (max-width: 768px) { .swiper-button-next, .swiper-button-prev { display: none; } #view-toggle-btn { display: none; } body, html { background: #fff; } }
 
      
-    #view-toggle-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 9999;
-      width: 50px;
-      height: 50px;
-      background: #4285f4;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      font-size: 24px;
-      transition: transform 0.2s;
-    }
-    #view-toggle-btn:hover { transform: scale(1.1); }
-    #view-toggle-btn:active { transform: scale(0.9); }
-
-     
-    @media (max-width: 768px) {
-      #view-toggle-btn { display: none; }
-      body, html { background: #fff; }
-    }
+    #view-toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 9999; width: 50px; height: 50px; background: #4285f4; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; }
   </style>
 </head>
 <body>
@@ -93,57 +52,73 @@
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report01.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report02.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report03.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report04.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report05.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report06.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                     <img src="https://born520.github.io/report/images/report07.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
                                                     <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구</div>
-                                                                                              <div class="video-container">
+              
+                                                                                <div class="video-container">
                   <iframe class="yt-player" src="https://www.youtube.com/embed/L_b-9F62jnA?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
                 </div>
-                                                                                                              <div class="yt-script">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구
+                              
+                                                                                <div class="yt-script">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구
 제207회 양산시의회 임시회 제1차 본회의 2025-11-05 #양산시의회 #양산시 #송은영</div></div>
-                                                                              <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영의원_황산공원 일대의 열린관광지 조성 촉구</div>
-                                                                                              <div class="video-container">
+              
+                                                                <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영의원_황산공원 일대의 열린관광지 조성 촉구</div>
+              
+                                                                                <div class="video-container">
                   <iframe class="yt-player" src="https://www.youtube.com/embed/SJy9Sqz0asA?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
                 </div>
-                                                                                                              <div class="yt-script">제205회 양산시의회 제1차 정례회 제1차 본회의 2025-06-02 #양산시의회 #양산시 #송은영</div></div>
-                                                                              <div class="yt-card"><div class="yt-title">송은영 의원 5분 자유발언</div>
-                                                                                              <div class="video-container">
+                              
+                                                                                <div class="yt-script">제205회 양산시의회 제1차 정례회 제1차 본회의 2025-06-02 #양산시의회 #양산시 #송은영</div></div>
+              
+                                                                <div class="yt-card"><div class="yt-title">송은영 의원 5분 자유발언</div>
+              
+                                                                                <div class="video-container">
                   <iframe class="yt-player" src="https://www.youtube.com/embed/Ip1Ah5qdKYw?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
                 </div>
-                                                                                                              <div class="yt-script">제191회 양산시의회 제2차 정례회 제3차 본회의 송은영 의원 5분 자유발언</div></div>
-                                            </div>
+                              
+                                                                                <div class="yt-script">제191회 양산시의회 제2차 정례회 제3차 본회의 송은영 의원 5분 자유발언</div></div>
+              
+                              </div>
       </div>
       </div>
   <div class="swiper-button-next"></div>
@@ -155,14 +130,11 @@
 <script>
   const swiperElement = document.getElementById('mainSwiper');
   const toggleBtn = document.getElementById('view-toggle-btn');
-
+  
   
   toggleBtn.addEventListener('click', function() {
-    const isMobileMode = swiperElement.classList.toggle('mobile-mode');
-    this.innerText = isMobileMode ? '🖥️' : '📱';
-    this.title = isMobileMode ? '전체 화면으로 보기' : '모바일 크기로 보기';
-    
-    
+    const isMobile = swiperElement.classList.toggle('mobile-mode');
+    this.innerText = isMobile ? '🖥️' : '📱';
     setTimeout(() => { swiper.update(); }, 400);
   });
 
@@ -170,10 +142,13 @@
     direction: 'horizontal',
     pagination: { el: '.swiper-pagination', clickable: true },
     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    
     mousewheel: { forceToAxis: true, releaseOnEdges: false },
     on: {
       slideChange: function () {
+        
         document.querySelectorAll('.yt-player').forEach(f => f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'));
+        
         this.slides[this.activeIndex].scrollTop = 0;
       },
     },
