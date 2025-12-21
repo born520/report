@@ -2,30 +2,37 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>모바일 의정보고서</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
-     
-    body, html { 
-      margin: 0; padding: 0; width: 100%; height: 100%; 
-      background: #222;  
-      display: flex; justify-content: center; align-items: center;
+    :root {
+      --app-max-width: 480px;
+      --bg-color: #f8f9fa;
+      --primary-color: #4285f4;
     }
 
-     
+    body, html { 
+      margin: 0; padding: 0; width: 100%; height: 100%; 
+      background: #1a1a1a;  
+      display: flex; justify-content: center; align-items: center;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
     .swiper { 
       width: 100%; 
-      max-width: 480px;  
+      max-width: var(--app-max-width);
       height: 100vh; 
-      background: #fff;  
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);  
+      background: var(--bg-color);
+      box-shadow: 0 0 50px rgba(0,0,0,0.5);
     }
 
     .swiper-slide {
       width: 100%; height: 100%;
-      overflow-y: auto;  
-      -webkit-overflow-scrolling: touch;
+      overflow-y: auto;
+      background: var(--bg-color);
+       
+      padding-top: env(safe-area-inset-top);
     }
 
      
@@ -33,30 +40,61 @@
       width: 100%; 
       display: flex; 
       flex-direction: column; 
-      padding-top: 40px;  
-      padding-bottom: 60px;  
+      padding: 30px 0 80px 0;  
     }
-    
-    img { width: 100%; display: block; border: none; margin-bottom: 5px; }
-    
+
+     
+    .img-item { width: 100%; display: block; border: none; margin-bottom: 10px; }
+
+     
+    .yt-card {
+      margin: 15px 15px 25px 15px;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border: 1px solid #eee;
+    }
+
+    .yt-title {
+      padding: 18px 20px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #111;
+      line-height: 1.4;
+      border-left: 5px solid var(--primary-color);
+    }
+
     .video-container {
       position: relative; width: 100%; padding-bottom: 56.25%; height: 0; background: #000;
-      margin-bottom: 5px;
     }
     .video-container iframe {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
     }
 
-    .text-box {
-      padding: 25px 20px;
-      font-size: 16px;
+    .yt-script {
+      padding: 20px;
+      font-size: 15px;
       line-height: 1.7;
-      color: #333;
-      word-break: break-all;
+      color: #555;
+      background: #fafafa;
+      border-top: 1px solid #f0f0f0;
     }
 
      
-    .swiper-pagination-bullet-active { background: #4285f4 !important; }
+    .text-box {
+      padding: 20px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #333;
+      margin: 0 15px 15px 15px;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+     
+    .swiper-pagination-bullet { background: #ccc; opacity: 1; }
+    .swiper-pagination-bullet-active { background: var(--primary-color); width: 20px; border-radius: 5px; }
   </style>
 </head>
 <body>
@@ -65,59 +103,72 @@
   <div class="swiper-wrapper">
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report01.jpg" loading="lazy">
+                                    <img class="img-item" src="https://born520.github.io/report/images/report01.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report02.jpg" loading="lazy">
+                                    <img class="img-item" src="https://born520.github.io/report/images/report02.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report03.jpg" loading="lazy">
+                                    <img class="img-item" src="https://born520.github.io/report/images/report03.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report04.jpg" loading="lazy">
+                                    <img class="img-item" src="https://born520.github.io/report/images/report04.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report05.jpg" loading="lazy">
+                                    <img class="img-item" src="https://born520.github.io/report/images/report05.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report06.jpg" loading="lazy">
+                                    <img class="img-item" src="https://born520.github.io/report/images/report06.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report07.jpg" loading="lazy">
+                                    <img class="img-item" src="https://born520.github.io/report/images/report07.jpg" loading="lazy">
+            
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <div class="video-container">
-                <iframe class="yt-player" 
-                        src="https://www.youtube.com/embed/rvPVVyl7l98?enablejsapi=1&amp;rel=0&amp;playsinline=1" 
-                        allowfullscreen></iframe>
-              </div>
-                                                <div class="text-box">
-                [5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구&lt;br&gt;제207회 양산시의회 임시회 제1차 본회의 2025-11-05 #양산시의회 #양산시 #송은영              </div>
+                                                    <div class="yt-card">                <div class="video-container">
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/rvPVVyl7l98?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
+                </div>
+                              
+                                                                                <div class="yt-script">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구&lt;br&gt;제207회 양산시의회 임시회 제1차 본회의 2025-11-05 #양산시의회 #양산시 #송은영</div>
+                </div>
+              
+                                                                <div class="yt-card">
+                  <div class="yt-title">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구</div>
+              
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <div class="video-container">
-                <iframe class="yt-player" 
-                        src="https://www.youtube.com/embed/rvPVVyl7l98?enablejsapi=1&amp;rel=0&amp;playsinline=1" 
-                        allowfullscreen></iframe>
-              </div>
-                                                <div class="text-box">
-                [5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구&lt;br&gt;제207회 양산시의회 임시회 제1차 본회의 2025-11-05 #양산시의회 #양산시 #송은영              </div>
+                                                    <div class="yt-card">                <div class="video-container">
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/rvPVVyl7l98?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
+                </div>
+                              
+                                                                                <div class="yt-script">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구&lt;br&gt;제207회 양산시의회 임시회 제1차 본회의 2025-11-05 #양산시의회 #양산시 #송은영</div>
+                </div>
+              
+                                                                <div class="yt-card">
+                  <div class="yt-title">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구</div>
+              
                               </div>
       </div>
       </div>
@@ -128,32 +179,22 @@
 <script>
   const swiper = new Swiper('.swiper', {
     direction: 'horizontal',
-    loop: false,
     pagination: { el: '.swiper-pagination', clickable: true },
-    
-    
     mousewheel: {
-      forceToAxis: true, 
-      sensitivity: 1,    
-      releaseOnEdges: true 
+      forceToAxis: true,
+      releaseOnEdges: true
     },
-    
-    
-    keyboard: {
-      enabled: true,
-      onlyInViewport: true,
-    },
-
     on: {
       slideChange: function () {
         stopAllVideos();
+        
+        this.slides[this.activeIndex].scrollTop = 0;
       },
     },
   });
 
   function stopAllVideos() {
-    const iframes = document.querySelectorAll('.yt-player');
-    iframes.forEach(iframe => {
+    document.querySelectorAll('.yt-player').forEach(iframe => {
       iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
     });
   }
