@@ -1,1 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>모바일 의정보고서</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <style>
+    body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; }
+    .swiper { width: 100%; height: 100%; }
+    .swiper-slide {
+      width: 100%; height: 100%;
+      overflow-y: auto;  
+      background: #fff;
+    }
+    .content-wrapper { width: 100%; display: flex; flex-direction: column; }
+    img { width: 100%; display: block; border: none; }
+    .video-container {
+      position: relative; width: 100%; padding-bottom: 56.25%; height: 0; background: #000;
+    }
+    .video-container iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+    }
+  </style>
+</head>
+<body>
 
+<div class="swiper">
+  <div class="swiper-wrapper">
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <img src="https://born520.github.io/report/images/report01.jpg" loading="lazy">
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <img src="https://born520.github.io/report/images/report02.jpg" loading="lazy">
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <img src="https://born520.github.io/report/images/report03.jpg" loading="lazy">
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <img src="https://born520.github.io/report/images/report04.jpg" loading="lazy">
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <img src="https://born520.github.io/report/images/report05.jpg" loading="lazy">
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <img src="https://born520.github.io/report/images/report06.jpg" loading="lazy">
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <img src="https://born520.github.io/report/images/report07.jpg" loading="lazy">
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/vPVVyl7l98?playsinline=1" allowfullscreen></iframe>
+              </div>
+                              </div>
+      </div>
+      </div>
+  <div class="swiper-pagination"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper('.swiper', {
+    direction: 'horizontal',
+    loop: false,
+    pagination: { el: '.swiper-pagination', clickable: true },
+    mousewheel: true,
+  });
+</script>
+</body>
+</html>
