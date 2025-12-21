@@ -37,10 +37,22 @@
 
      
     .swiper-button-next, .swiper-button-prev { color: #4285f4; background: rgba(255,255,255,0.8); width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    @media (max-width: 768px) { .swiper-button-next, .swiper-button-prev { display: none; } #view-toggle-btn { display: none; } body, html { background: #fff; } }
 
      
-    #view-toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 9999; width: 50px; height: 50px; background: #4285f4; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; }
+    #view-toggle-btn { 
+      position: fixed; top: 20px; right: 20px; z-index: 9999; 
+      width: 50px; height: 50px; background: #4285f4; color: white; 
+      border-radius: 50%; display: flex; justify-content: center; 
+      align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; 
+    }
+
+     
+    @media (max-width: 768px) {
+      #view-toggle-btn { display: none !important; }  
+      .swiper-button-next, .swiper-button-prev { display: none !important; }  
+      body, html { background: #fff; }
+      .swiper { max-width: 100% !important; }
+    }
   </style>
 </head>
 <body>
@@ -132,23 +144,22 @@
   const toggleBtn = document.getElementById('view-toggle-btn');
   
   
-  toggleBtn.addEventListener('click', function() {
-    const isMobile = swiperElement.classList.toggle('mobile-mode');
-    this.innerText = isMobile ? '🖥️' : '📱';
-    setTimeout(() => { swiper.update(); }, 400);
-  });
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+      const isMobile = swiperElement.classList.toggle('mobile-mode');
+      this.innerText = isMobile ? '🖥️' : '📱';
+      setTimeout(() => { swiper.update(); }, 400);
+    });
+  }
 
   const swiper = new Swiper('.swiper', {
     direction: 'horizontal',
     pagination: { el: '.swiper-pagination', clickable: true },
     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-    
     mousewheel: { forceToAxis: true, releaseOnEdges: false },
     on: {
       slideChange: function () {
-        
         document.querySelectorAll('.yt-player').forEach(f => f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'));
-        
         this.slides[this.activeIndex].scrollTop = 0;
       },
     },
