@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
   <title>의정보고서</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
@@ -17,8 +17,44 @@
      
     .swiper.mobile-mode { max-width: 480px; box-shadow: 0 0 40px rgba(0,0,0,0.2); }
 
-    .swiper-slide { width: 100%; height: 100%; overflow-y: auto; background: #fff; -webkit-overflow-scrolling: touch; }
-    .content-wrapper { width: 100%; display: flex; flex-direction: column; padding: 0; }
+    .swiper-slide { width: 100%; height: 100%; overflow: hidden; background: #fff; position: relative; }
+    
+     
+    .content-wrapper { 
+      width: 100%; height: 100%; display: flex; flex-direction: column; 
+      overflow-y: auto; -webkit-overflow-scrolling: touch; 
+    }
+    
+     
+    .swiper-slide.image-only { overflow: visible; }
+    .swiper-slide.image-only .content-wrapper { overflow: hidden; }
+    
+     
+    .zoomable-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+    }
+    
+    .zoomable-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      display: block;
+      cursor: zoom-in;
+      transition: cursor 0.2s;
+    }
+    
+    .zoomable-image.zoomed {
+      cursor: zoom-out;
+    }
+    
     img { width: 100%; display: block; border: none; }
     
      
@@ -45,11 +81,32 @@
       border-radius: 50%; display: flex; justify-content: center; 
       align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; 
     }
+    
+     
+    .zoom-indicator {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    
+    .zoom-indicator.show {
+      opacity: 1;
+    }
 
      
     @media (max-width: 768px) {
-      #view-toggle-btn { display: none !important; }  
-      .swiper-button-next, .swiper-button-prev { display: none !important; }  
+      #view-toggle-btn { display: none !important; }
+      .swiper-button-next, .swiper-button-prev { display: none !important; }
       body, html { background: #fff; }
       .swiper { max-width: 100% !important; }
     }
@@ -61,57 +118,57 @@
 
 <div class="swiper" id="mainSwiper">
   <div class="swiper-wrapper">
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report01.jpg" loading="lazy">
-            
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report02.jpg" loading="lazy">
-            
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report03.jpg" loading="lazy">
-            
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report04.jpg" loading="lazy">
-            
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report05.jpg" loading="lazy">
-            
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report06.jpg" loading="lazy">
-            
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <img src="https://born520.github.io/report/images/report07.jpg" loading="lazy">
-            
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                                    <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구</div>
-              
-                                                                                <div class="video-container">
-                  <iframe class="yt-player" src="https://www.youtube.com/embed/L_b-9F62jnA?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
-                </div>
-                              
-                                                                                <div class="yt-script">1. 주요 거점에 &#39;상설 홍보관 및 팝업 스토어&#39; 조성
+          <div class="swiper-slide image-only">
+                  <div class="zoom-indicator">🔍 더블탭하거나 핀치하여 확대</div>
+          <div class="zoomable-container" data-page="0">
+            <img class="zoomable-image" src="https://born520.github.io/report/images/report01.jpg" loading="lazy" draggable="false">
+          </div>
+              </div>
+          <div class="swiper-slide image-only">
+                  <div class="zoom-indicator">🔍 더블탭하거나 핀치하여 확대</div>
+          <div class="zoomable-container" data-page="1">
+            <img class="zoomable-image" src="https://born520.github.io/report/images/report02.jpg" loading="lazy" draggable="false">
+          </div>
+              </div>
+          <div class="swiper-slide image-only">
+                  <div class="zoom-indicator">🔍 더블탭하거나 핀치하여 확대</div>
+          <div class="zoomable-container" data-page="2">
+            <img class="zoomable-image" src="https://born520.github.io/report/images/report03.jpg" loading="lazy" draggable="false">
+          </div>
+              </div>
+          <div class="swiper-slide image-only">
+                  <div class="zoom-indicator">🔍 더블탭하거나 핀치하여 확대</div>
+          <div class="zoomable-container" data-page="3">
+            <img class="zoomable-image" src="https://born520.github.io/report/images/report04.jpg" loading="lazy" draggable="false">
+          </div>
+              </div>
+          <div class="swiper-slide image-only">
+                  <div class="zoom-indicator">🔍 더블탭하거나 핀치하여 확대</div>
+          <div class="zoomable-container" data-page="4">
+            <img class="zoomable-image" src="https://born520.github.io/report/images/report05.jpg" loading="lazy" draggable="false">
+          </div>
+              </div>
+          <div class="swiper-slide image-only">
+                  <div class="zoom-indicator">🔍 더블탭하거나 핀치하여 확대</div>
+          <div class="zoomable-container" data-page="5">
+            <img class="zoomable-image" src="https://born520.github.io/report/images/report06.jpg" loading="lazy" draggable="false">
+          </div>
+              </div>
+          <div class="swiper-slide image-only">
+                  <div class="zoom-indicator">🔍 더블탭하거나 핀치하여 확대</div>
+          <div class="zoomable-container" data-page="6">
+            <img class="zoomable-image" src="https://born520.github.io/report/images/report07.jpg" loading="lazy" draggable="false">
+          </div>
+              </div>
+          <div class="swiper-slide ">
+                  <div class="content-wrapper">
+                                                            <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구</div>
+                
+                                                                                            <div class="video-container">
+                    <iframe class="yt-player" src="https://www.youtube.com/embed/L_b-9F62jnA?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
+                  </div>
+                                  
+                                                                                            <div class="yt-script">1. 주요 거점에 &#39;상설 홍보관 및 팝업 스토어&#39; 조성
 시민과 관광객의 접근성이 높은 양산역, 물금역, 통도사, 남부시장 등에 양산 캐릭터와 기념품, 특산품을 한눈에 보고 구매할 수 있는 복합 공간을 만들어야 합니다.
 
 2. 온라인 유통 체계 구축
@@ -119,14 +176,14 @@
 
 3. 지역 공예인 및 소상공인 판로 지원
 우수한 기념품을 선정하여 시청 행사, 지역 축제, 공공시설 등에서 판매할 수 있도록 기회를 제공함으로써 지역 경제 활성화의 마중물 역할을 해야 합니다.</div></div>
-              
-                                                                <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영의원_황산공원 일대의 열린관광지 조성 촉구</div>
-              
-                                                                                <div class="video-container">
-                  <iframe class="yt-player" src="https://www.youtube.com/embed/SJy9Sqz0asA?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
-                </div>
-                              
-                                                                                <div class="yt-script">송은영의 3가지 핵심 제언
+                
+                                                                          <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영의원_황산공원 일대의 열린관광지 조성 촉구</div>
+                
+                                                                                            <div class="video-container">
+                    <iframe class="yt-player" src="https://www.youtube.com/embed/SJy9Sqz0asA?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
+                  </div>
+                                  
+                                                                                            <div class="yt-script">송은영의 3가지 핵심 제언
 
 1. 경남 최초 &#39;수변형 열린 관광지&#39; 조성
 문화체육관광부 공모 사업을 통해 국비를 확보하고, 무장애 보행 인프라, 열린 화장실, 시각·청각 장애인용 정보 시스템을 구축하여 황산공원을 전국적인 명소로 만들어야 합니다.
@@ -138,14 +195,14 @@
 
 3. &#39;열린 가게&#39; 인증 등 소프트웨어 강화
 인프라 구축뿐만 아니라 상인과 공무원을 대상으로 관광 약자 응대 교육을 실시하고, &#39;열린 가게&#39; 인증 프로그램을 도입하여 관광 약자가 안심하고 방문할 수 있는 품격 있는 도시를 만들어야 합니다.</div></div>
-              
-                                                                <div class="yt-card"><div class="yt-title">[송은영 의원 5분 자유발언]공공장소 및 다중이용시설의 공공와이파이 서비스 구축촉구</div>
-              
-                                                                                <div class="video-container">
-                  <iframe class="yt-player" src="https://www.youtube.com/embed/Ip1Ah5qdKYw?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
-                </div>
-                              
-                                                                                <div class="yt-script">송은영의 4가지 핵심 제언
+                
+                                                                          <div class="yt-card"><div class="yt-title">[송은영 의원 5분 자유발언]공공장소 및 다중이용시설의 공공와이파이 서비스 구축촉구</div>
+                
+                                                                                            <div class="video-container">
+                    <iframe class="yt-player" src="https://www.youtube.com/embed/Ip1Ah5qdKYw?enablejsapi=1&amp;rel=0&amp;playsinline=1" allowfullscreen></iframe>
+                  </div>
+                                  
+                                                                                            <div class="yt-script">송은영의 4가지 핵심 제언
 
 관광지 확대 설치: 양산 8경 등 주요 관광지에 공공 와이파이를 구축하여 관광객과 시민의 편의를 높여야 합니다.
 
@@ -156,15 +213,15 @@
 스마트시티 기반 마련: 공공 와이파이는 향후 &#39;스마트 폴&#39; 등 스마트 도시 기반 시설로 확장될 중요한 인프라입니다.
 
 50만 정주 도시, 스마트시티 양산을 위해 적극적인 행정을 당부드립니다. 경청해 주셔서 감사합니다.</div></div>
-              
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <div class="html-item"><div style='max-width:480px;margin:0 auto;font-family:Apple SD Gothic Neo,sans-serif;background-color:#f5f5f5;padding:10px;'><div style='text-align:center;padding:25px 10px;background-color:#fff;border-radius:12px;margin-bottom:20px;border-top:4px solid #4285f4;'><h2 style='margin:0;font-size:20px;color:#1a1a1a;font-weight:800;'>언론에서 만난 <span style='color:#4285f4;'>송은영</span></h2></div><a href='https://www.yangsanilbo.com/news/articleView.html?idxno=116960' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRiVht6M9BMR1z_R3Vy2v28PB-Gkn6p_FgEJwUhMiyFXBY9PQ' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>[5분발언] 송은영 "관광약자에게 '닫힌 도시' 양산, 열린 도시로"</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>송은영 양산시의원(국민의힘, 비례)은 황산공원과 물금 상권을 누구나 자유롭게 이용할 수 있는 '무장애 열린관광지'로 조성할 것을 제안했다. 송 의원은 제204회 양산시의회 정례회 제1차 본회의 5분 자유발언에서 '2026년 양산 방문의 해'를 성공적으로 추진하기 위해 장애인, 고령자, 임산부, 영유아 동반 가족 등이 차별 없이 이동하고 체험하며 즐길 수 있는 무장애 관광환경이 반드시 필요하다고 강조했다.</p></div></div></a><a href='https://www.idomin.com/news/articleView.html?idxno=938720' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQmwIl6If0bClEJ3IoXki0q41JaDSJj9YSmti6_dB4pZoXAuw' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>송은영 양산시의원 "황산공원을 열린관광지로"</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>송은영(국민의힘·비례) 양산시의원이 황산공원을 '무장애 열린관광지'로 조성해야 한다고 제안했다. 송 시의원은 2일 열린 제204회 제1차 정례회 5분 발언에 나서 "2026년 양산방문의 해 성공적인 추진을 위해 물금읍 황산공원과 인근 상권을 '무장애 열린관광지'로 조성할 것을 제안한다"며 "황산공원은 양산이 자랑하는 대표적인 수변공원이자 광역권 방문객이 꾸준히 찾는 핵심 관광자원이지만 장애인이나 유모차를 이용한 가족 단위 방문객이 겪는 불편이 매우 크다"고 말했다. </p></div></div></a><a href='https://www.yangsanilbo.com/news/articleView.html?idxno=113317' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHNt4cXNIblIqPzHxyUzidGdEM8HZ8vNC7tVmWq6XVa8UsDQ' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>송은영 의원 “동남권 의료거점도시 표방한다면 ‘달빛어린이병원’부터”</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>4년 전 운영이 중단된 달빛어린이병원을 조속히 재지정해야 한다는 목소리가 나왔다. 송은영 양산시의원(국민의힘, 비례)은 지난 18일 열린 제202회 제2차 정례회 제3차 본회의에 '양산시 달빛어린이병원 지정을 위한 제안'을 주제로 5분 자유발언을 진행했다.</p></div></div></a></div></div>
+                
+                                    </div>
+              </div>
+          <div class="swiper-slide ">
+                  <div class="content-wrapper">
+                                          <div class="html-item"><div style='max-width:480px;margin:0 auto;font-family:Apple SD Gothic Neo,sans-serif;background-color:#f5f5f5;padding:10px;'><div style='text-align:center;padding:25px 10px;background-color:#fff;border-radius:12px;margin-bottom:20px;border-top:4px solid #4285f4;'><h2 style='margin:0;font-size:20px;color:#1a1a1a;font-weight:800;'>언론에서 만난 <span style='color:#4285f4;'>송은영</span></h2></div><a href='https://www.yangsanilbo.com/news/articleView.html?idxno=116960' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRiVht6M9BMR1z_R3Vy2v28PB-Gkn6p_FgEJwUhMiyFXBY9PQ' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>[5분발언] 송은영 "관광약자에게 '닫힌 도시' 양산, 열린 도시로"</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>송은영 양산시의원(국민의힘, 비례)은 황산공원과 물금 상권을 누구나 자유롭게 이용할 수 있는 '무장애 열린관광지'로 조성할 것을 제안했다. 송 의원은 제204회 양산시의회 정례회 제1차 본회의 5분 자유발언에서 '2026년 양산 방문의 해'를 성공적으로 추진하기 위해 장애인, 고령자, 임산부, 영유아 동반 가족 등이 차별 없이 이동하고 체험하며 즐길 수 있는 무장애 관광환경이 반드시 필요하다고 강조했다.</p></div></div></a><a href='https://www.idomin.com/news/articleView.html?idxno=938720' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQmwIl6If0bClEJ3IoXki0q41JaDSJj9YSmti6_dB4pZoXAuw' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>송은영 양산시의원 "황산공원을 열린관광지로"</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>송은영(국민의힘·비례) 양산시의원이 황산공원을 '무장애 열린관광지'로 조성해야 한다고 제안했다. 송 시의원은 2일 열린 제204회 제1차 정례회 5분 발언에 나서 "2026년 양산방문의 해 성공적인 추진을 위해 물금읍 황산공원과 인근 상권을 '무장애 열린관광지'로 조성할 것을 제안한다"며 "황산공원은 양산이 자랑하는 대표적인 수변공원이자 광역권 방문객이 꾸준히 찾는 핵심 관광자원이지만 장애인이나 유모차를 이용한 가족 단위 방문객이 겪는 불편이 매우 크다"고 말했다. </p></div></div></a><a href='https://www.yangsanilbo.com/news/articleView.html?idxno=113317' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHNt4cXNIblIqPzHxyUzidGdEM8HZ8vNC7tVmWq6XVa8UsDQ' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>송은영 의원 “동남권 의료거점도시 표방한다면 ‘달빛어린이병원’부터”</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>4년 전 운영이 중단된 달빛어린이병원을 조속히 재지정해야 한다는 목소리가 나왔다. 송은영 양산시의원(국민의힘, 비례)은 지난 18일 열린 제202회 제2차 정례회 제3차 본회의에 '양산시 달빛어린이병원 지정을 위한 제안'을 주제로 5분 자유발언을 진행했다.</p></div></div></a></div></div>
 
-                              </div>
-      </div>
+                                    </div>
+              </div>
       </div>
   <div class="swiper-button-next"></div>
   <div class="swiper-button-prev"></div>
@@ -175,7 +232,6 @@
 <script>
   const swiperElement = document.getElementById('mainSwiper');
   const toggleBtn = document.getElementById('view-toggle-btn');
-  
   
   if (toggleBtn) {
     toggleBtn.addEventListener('click', function() {
@@ -190,13 +246,228 @@
     pagination: { el: '.swiper-pagination', clickable: true },
     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
     mousewheel: { forceToAxis: true, releaseOnEdges: false },
+    allowTouchMove: true,
     on: {
       slideChange: function () {
         document.querySelectorAll('.yt-player').forEach(f => f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'));
         this.slides[this.activeIndex].scrollTop = 0;
+        
+        
+        document.querySelectorAll('.zoomable-container').forEach(container => {
+          resetZoom(container);
+        });
       },
     },
   });
+
+  
+  class ImageZoom {
+    constructor(container) {
+      this.container = container;
+      this.image = container.querySelector('.zoomable-image');
+      this.indicator = container.parentElement.querySelector('.zoom-indicator');
+      this.scale = 1;
+      this.posX = 0;
+      this.posY = 0;
+      this.isDragging = false;
+      this.startX = 0;
+      this.startY = 0;
+      this.lastTap = 0;
+      this.minScale = 1;
+      this.maxScale = 4;
+      
+      
+      this.touchStartDistance = 0;
+      this.touchStartScale = 1;
+      
+      this.init();
+    }
+    
+    init() {
+      
+      this.container.addEventListener('touchstart', (e) => this.handleTouchStart(e));
+      this.container.addEventListener('touchmove', (e) => this.handleTouchMove(e));
+      this.container.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+      
+      
+      this.image.addEventListener('dblclick', () => this.toggleZoom());
+      this.container.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+      this.container.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+      this.container.addEventListener('mouseup', () => this.handleMouseUp());
+      this.container.addEventListener('mouseleave', () => this.handleMouseUp());
+      
+      
+      this.container.addEventListener('wheel', (e) => this.handleWheel(e), { passive: false });
+    }
+    
+    handleTouchStart(e) {
+      const now = Date.now();
+      const timeSinceLastTap = now - this.lastTap;
+      
+      if (e.touches.length === 2) {
+        
+        e.preventDefault();
+        this.touchStartDistance = this.getDistance(e.touches[0], e.touches[1]);
+        this.touchStartScale = this.scale;
+        swiper.allowTouchMove = false;
+      } else if (e.touches.length === 1) {
+        
+        if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+          e.preventDefault();
+          this.toggleZoom(e.touches[0]);
+        }
+        this.lastTap = now;
+        
+        if (this.scale > 1) {
+          this.isDragging = true;
+          this.startX = e.touches[0].clientX - this.posX;
+          this.startY = e.touches[0].clientY - this.posY;
+          swiper.allowTouchMove = false;
+        }
+      }
+    }
+    
+    handleTouchMove(e) {
+      if (e.touches.length === 2 && this.touchStartDistance > 0) {
+        
+        e.preventDefault();
+        const currentDistance = this.getDistance(e.touches[0], e.touches[1]);
+        const scaleChange = currentDistance / this.touchStartDistance;
+        this.setScale(this.touchStartScale * scaleChange);
+      } else if (this.isDragging && e.touches.length === 1) {
+        e.preventDefault();
+        this.posX = e.touches[0].clientX - this.startX;
+        this.posY = e.touches[0].clientY - this.startY;
+        this.constrainPosition();
+        this.updateTransform();
+      }
+    }
+    
+    handleTouchEnd(e) {
+      if (e.touches.length === 0) {
+        this.isDragging = false;
+        this.touchStartDistance = 0;
+        if (this.scale <= 1) {
+          swiper.allowTouchMove = true;
+        }
+      }
+    }
+    
+    handleMouseDown(e) {
+      if (this.scale > 1) {
+        e.preventDefault();
+        this.isDragging = true;
+        this.startX = e.clientX - this.posX;
+        this.startY = e.clientY - this.posY;
+        this.image.style.cursor = 'grabbing';
+      }
+    }
+    
+    handleMouseMove(e) {
+      if (this.isDragging) {
+        e.preventDefault();
+        this.posX = e.clientX - this.startX;
+        this.posY = e.clientY - this.startY;
+        this.constrainPosition();
+        this.updateTransform();
+      }
+    }
+    
+    handleMouseUp() {
+      this.isDragging = false;
+      if (this.scale > 1) {
+        this.image.style.cursor = 'zoom-out';
+      } else {
+        this.image.style.cursor = 'zoom-in';
+      }
+    }
+    
+    handleWheel(e) {
+      if (this.scale > 1 || e.deltaY < 0) {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+        this.setScale(this.scale * delta);
+      }
+    }
+    
+    toggleZoom(touch) {
+      if (this.scale === 1) {
+        this.setScale(2.5);
+        this.showIndicator('확대됨 - 드래그로 이동');
+      } else {
+        this.reset();
+        this.showIndicator('원래 크기');
+      }
+    }
+    
+    setScale(newScale) {
+      this.scale = Math.max(this.minScale, Math.min(this.maxScale, newScale));
+      this.constrainPosition();
+      this.updateTransform();
+      
+      if (this.scale > 1) {
+        this.image.classList.add('zoomed');
+        swiper.allowTouchMove = false;
+      } else {
+        this.image.classList.remove('zoomed');
+        swiper.allowTouchMove = true;
+      }
+    }
+    
+    constrainPosition() {
+      const containerRect = this.container.getBoundingClientRect();
+      const imageRect = this.image.getBoundingClientRect();
+      
+      const maxX = Math.max(0, (imageRect.width * this.scale - containerRect.width) / 2);
+      const maxY = Math.max(0, (imageRect.height * this.scale - containerRect.height) / 2);
+      
+      this.posX = Math.max(-maxX, Math.min(maxX, this.posX));
+      this.posY = Math.max(-maxY, Math.min(maxY, this.posY));
+    }
+    
+    updateTransform() {
+      this.image.style.transform = `translate(${this.posX}px, ${this.posY}px) scale(${this.scale})`;
+    }
+    
+    reset() {
+      this.scale = 1;
+      this.posX = 0;
+      this.posY = 0;
+      this.updateTransform();
+      this.image.classList.remove('zoomed');
+      swiper.allowTouchMove = true;
+    }
+    
+    getDistance(touch1, touch2) {
+      const dx = touch2.clientX - touch1.clientX;
+      const dy = touch2.clientY - touch1.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    showIndicator(text) {
+      if (this.indicator) {
+        this.indicator.textContent = text;
+        this.indicator.classList.add('show');
+        setTimeout(() => {
+          this.indicator.classList.remove('show');
+        }, 1500);
+      }
+    }
+  }
+
+  
+  const zoomInstances = [];
+  document.querySelectorAll('.zoomable-container').forEach(container => {
+    zoomInstances.push(new ImageZoom(container));
+  });
+  
+  
+  function resetZoom(container) {
+    const instance = zoomInstances.find(z => z.container === container);
+    if (instance) {
+      instance.reset();
+    }
+  }
 </script>
 </body>
 </html>
