@@ -9,7 +9,7 @@
      
     body, html { 
       margin: 0; padding: 0; width: 100%; height: 100%; 
-      background: #e9ecef;  
+      background: #f0f0f0;  
       display: flex; justify-content: center; align-items: center; 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
       overflow: hidden;
@@ -17,8 +17,7 @@
     
      
     .swiper { 
-      width: 100%; 
-      height: 100%; 
+      width: 100%; height: 100%; 
       max-width: 480px;  
       position: relative; 
       background: #fff; 
@@ -38,10 +37,17 @@
      
     .content-wrapper { width: 100%; display: flex; flex-direction: column; padding: 0; }
     .image-wrapper { width: 100%; position: relative; background: #000; }
-    .zoomable-container { width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; touch-action: pan-y; }
+    .zoomable-container { 
+      width: 100%; min-height: 100vh; display: flex; justify-content: center; 
+      align-items: center; position: relative; overflow: hidden; touch-action: pan-y; 
+    }
     .zoomable-container.zoomed { touch-action: none; }
-    .zoomable-image { max-width: 100%; width: 100%; height: auto; display: block; cursor: zoom-in; transition: cursor 0.2s; user-select: none; -webkit-user-select: none; }
+    .zoomable-image { 
+      max-width: 100%; width: 100%; height: auto; display: block; 
+      cursor: zoom-in; transition: cursor 0.2s; user-select: none; -webkit-user-select: none; 
+    }
     .zoomable-image.zoomed { cursor: grab; }
+    .zoomable-image.zoomed:active { cursor: grabbing; }
     img { width: 100%; display: block; border: none; }
     
      
@@ -54,57 +60,50 @@
     .html-item { width: 100%; }
 
      
-    .swiper-button-next, .swiper-button-prev { color: #4285f4; background: rgba(255,255,255,0.8); width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .swiper-button-next, .swiper-button-prev { 
+      color: #4285f4; 
+      background: rgba(255,255,255,0.85); 
+      width: 48px; 
+      height: 48px; 
+      border-radius: 50%; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
+      transition: opacity 0.3s;
+    }
+    .swiper-button-next::after, .swiper-button-prev::after { font-size: 18px; font-weight: bold; }
+
+     
+    .swiper-button-disabled { opacity: 0 !important; pointer-events: none; }
 
      
     #view-toggle-btn { 
       position: fixed; top: 20px; right: 20px; z-index: 9999; 
       width: 50px; height: 50px; background: #4285f4; color: white; 
       border-radius: 50%; display: flex; justify-content: center; 
-      align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px;
-      transition: transform 0.2s;
-    }
-    #view-toggle-btn:active { transform: scale(0.9); }
-    
-     
-    .swipe-hint {
-      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-      z-index: 9998; pointer-events: none; display: flex; align-items: center;
-      background: rgba(0,0,0,0.6); color: white; padding: 10px 20px; border-radius: 30px;
-      font-size: 14px; transition: opacity 0.5s;
-    }
-    .arrow-icon {
-      font-weight: bold; animation: arrowMove 1.5s infinite; margin: 0 10px;
-    }
-    @keyframes arrowMove {
-      0% { transform: translateX(5px); opacity: 0.2; }
-      50% { transform: translateX(-5px); opacity: 1; }
-      100% { transform: translateX(5px); opacity: 0.2; }
+      align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; 
     }
     
      
-    .zoom-indicator { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); color: white; padding: 12px 20px; border-radius: 25px; font-size: 14px; z-index: 10000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .zoom-indicator { 
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+      background: rgba(0,0,0,0.7); color: white; padding: 12px 20px; 
+      border-radius: 25px; font-size: 14px; z-index: 10000; opacity: 0; 
+      transition: opacity 0.3s; pointer-events: none; 
+    }
     .zoom-indicator.show { opacity: 1; }
 
      
     @media (max-width: 768px) {
       #view-toggle-btn { display: none !important; }
-      .swiper-button-next, .swiper-button-prev { display: none !important; }
       body, html { background: #fff; }
       .swiper { max-width: 100% !important; box-shadow: none; }
+       
+      .swiper-button-next, .swiper-button-prev { width: 40px; height: 40px; }
     }
   </style>
 </head>
 <body>
 
-<div id="view-toggle-btn" title="전체화면 전환">🖥️</div>
-
-<div id="swipe-hint" class="swipe-hint">
-  <span class="arrow-icon">◀</span>
-  <span>옆으로 넘겨보세요</span>
-  <span class="arrow-icon">▶</span>
-</div>
-
+<div id="view-toggle-btn" title="화면 폭 조절">🖥️</div>
 <div class="zoom-indicator" id="globalZoomIndicator">🔍 더블탭하거나 핀치하여 확대</div>
 
 <div class="swiper" id="mainSwiper">
@@ -253,7 +252,6 @@
 <script>
   const swiperElement = document.getElementById('mainSwiper');
   const toggleBtn = document.getElementById('view-toggle-btn');
-  const swipeHint = document.getElementById('swipe-hint');
   const globalIndicator = document.getElementById('globalZoomIndicator');
   
   
@@ -261,7 +259,6 @@
     toggleBtn.addEventListener('click', function() {
       const isFull = swiperElement.classList.toggle('full-mode');
       this.innerText = isFull ? '📱' : '🖥️';
-      this.title = isFull ? '모바일뷰로 전환' : '전체화면으로 전환';
       
       setTimeout(() => { swiper.update(); }, 450);
     });
@@ -270,7 +267,7 @@
   
   const swiper = new Swiper('.swiper', {
     direction: 'horizontal',
-    loop: false,
+    loop: false, 
     pagination: { el: '.swiper-pagination', clickable: true },
     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
     mousewheel: { forceToAxis: true, releaseOnEdges: false },
@@ -283,18 +280,11 @@
         this.slides[this.activeIndex].scrollTop = 0;
         
         
-        if (swipeHint) swipeHint.style.opacity = '0';
-        
-        
         document.querySelectorAll('.zoomable-container').forEach(container => {
           const instance = zoomInstances.get(container);
           if (instance) instance.reset();
         });
       },
-      touchStart: function() {
-        
-        if (swipeHint) swipeHint.style.opacity = '0';
-      }
     },
   });
 
@@ -304,8 +294,7 @@
       this.container = container;
       this.image = container.querySelector('.zoomable-image');
       this.slide = container.closest('.swiper-slide');
-      this.scale = 1;
-      this.posX = 0; this.posY = 0;
+      this.scale = 1; this.posX = 0; this.posY = 0;
       this.isDragging = false;
       this.startX = 0; this.startY = 0;
       this.lastTap = 0;
@@ -313,9 +302,10 @@
       this.touchStartDistance = 0;
       this.init();
     }
+    
     init() {
-      this.container.addEventListener('touchstart', (e) => this.handleTouchStart(e));
-      this.container.addEventListener('touchmove', (e) => this.handleTouchMove(e));
+      this.container.addEventListener('touchstart', (e) => this.handleTouchStart(e), {passive: false});
+      this.container.addEventListener('touchmove', (e) => this.handleTouchMove(e), {passive: false});
       this.container.addEventListener('touchend', (e) => this.handleTouchEnd(e));
       this.image.addEventListener('dblclick', (e) => this.toggleZoom(e));
       this.container.addEventListener('mousedown', (e) => this.handleMouseDown(e));
@@ -324,6 +314,7 @@
       this.container.addEventListener('mouseleave', () => this.handleMouseUp());
       this.container.addEventListener('wheel', (e) => this.handleWheel(e), { passive: false });
     }
+    
     handleTouchStart(e) {
       const now = Date.now();
       const timeSinceLastTap = now - this.lastTap;
@@ -345,12 +336,14 @@
         }
       }
     }
+    
     handleTouchMove(e) {
-      if (e.touches.length === 2 && this.touchStartDistance > 0) {
+      if (e.touches.length === 2) {
         e.preventDefault(); e.stopPropagation();
-        const currentDistance = this.getDistance(e.touches[0], e.touches[1]);
-        this.setScale( (currentDistance / this.touchStartDistance) * this.scale );
-        this.touchStartDistance = currentDistance;
+        const dist = this.getDistance(e.touches[0], e.touches[1]);
+        const scaleChange = dist / this.touchStartDistance;
+        this.setScale(this.scale * scaleChange);
+        this.touchStartDistance = dist;
       } else if (this.isDragging && e.touches.length === 1 && this.scale > 1) {
         e.preventDefault(); e.stopPropagation();
         this.posX = e.touches[0].clientX - this.startX;
@@ -359,61 +352,39 @@
         this.updateTransform();
       }
     }
-    handleTouchEnd(e) {
-      if (e.touches.length === 0) {
-        this.isDragging = false;
-        if (this.scale <= 1) swiper.allowTouchMove = true;
-      }
-    }
-    handleMouseDown(e) {
-      if (this.scale > 1) {
-        e.preventDefault();
-        this.isDragging = true;
-        this.startX = e.clientX - this.posX;
-        this.startY = e.clientY - this.posY;
-        swiper.allowTouchMove = false;
-      }
-    }
-    handleMouseMove(e) {
-      if (this.isDragging) {
-        this.posX = e.clientX - this.startX;
-        this.posY = e.clientY - this.startY;
-        this.constrainPosition();
-        this.updateTransform();
-      }
-    }
-    handleMouseUp() {
+    
+    handleTouchEnd() {
       this.isDragging = false;
       if (this.scale <= 1) swiper.allowTouchMove = true;
     }
-    handleWheel(e) {
-      if (this.scale > 1 || e.deltaY < 0) {
-        e.preventDefault();
-        const delta = e.deltaY > 0 ? 0.9 : 1.1;
-        this.setScale(this.scale * delta);
-      }
-    }
+
+    handleMouseDown(e) { if (this.scale > 1) { e.preventDefault(); this.isDragging = true; this.startX = e.clientX - this.posX; this.startY = e.clientY - this.posY; swiper.allowTouchMove = false; } }
+    handleMouseMove(e) { if (this.isDragging) { this.posX = e.clientX - this.startX; this.posY = e.clientY - this.startY; this.constrainPosition(); this.updateTransform(); } }
+    handleMouseUp() { this.isDragging = false; if (this.scale <= 1) swiper.allowTouchMove = true; }
+    handleWheel(e) { if (this.scale > 1 || e.deltaY < 0) { e.preventDefault(); this.setScale(this.scale * (e.deltaY > 0 ? 0.9 : 1.1)); } }
+
     toggleZoom(event) {
       if (this.scale === 1) {
         const rect = this.image.getBoundingClientRect();
         const clickX = (event.clientX || event.pageX) - rect.left;
         const clickY = (event.clientY || event.pageY) - rect.top;
         this.setScale(2.5);
-        const containerRect = this.container.getBoundingClientRect();
-        this.posX = (containerRect.width / 2) - (clickX * 2.5);
-        this.posY = (containerRect.height / 2) - (clickY * 2.5);
+        this.posX = (this.container.offsetWidth / 2) - (clickX * 2.5);
+        this.posY = (this.container.offsetHeight / 2) - (clickY * 2.5);
         this.constrainPosition();
-        this.updateTransform();
         this.showIndicator('확대됨 - 드래그 가능');
       } else {
         this.reset();
         this.showIndicator('원래 크기');
       }
+      this.updateTransform();
     }
+
     setScale(newScale) {
-      this.scale = Math.max(this.minScale, Math.min(this.maxScale, newScale));
+      this.scale = Math.max(1, Math.min(4, newScale));
       if (this.scale > 1) {
         this.image.classList.add('zoomed');
+        this.container.classList.add('zoomed');
         swiper.allowTouchMove = false;
         this.slide.style.overflowY = 'hidden';
       } else {
@@ -421,28 +392,26 @@
       }
       this.updateTransform();
     }
+
     constrainPosition() {
-      const containerRect = this.container.getBoundingClientRect();
-      const scaledWidth = containerRect.width * this.scale;
-      const scaledHeight = containerRect.height * this.scale;
-      const maxX = Math.max(0, (scaledWidth - containerRect.width) / 2);
-      const maxY = Math.max(0, (scaledHeight - containerRect.height) / 2);
+      const maxX = (this.container.offsetWidth * this.scale - this.container.offsetWidth) / 2;
+      const maxY = (this.container.offsetHeight * this.scale - this.container.offsetHeight) / 2;
       this.posX = Math.max(-maxX, Math.min(maxX, this.posX));
       this.posY = Math.max(-maxY, Math.min(maxY, this.posY));
     }
-    updateTransform() {
-      this.image.style.transform = `translate(${this.posX}px, ${this.posY}px) scale(${this.scale})`;
-    }
+
+    updateTransform() { this.image.style.transform = `translate(${this.posX}px, ${this.posY}px) scale(${this.scale})`; }
+    
     reset() {
       this.scale = 1; this.posX = 0; this.posY = 0;
       this.updateTransform();
       this.image.classList.remove('zoomed');
+      this.container.classList.remove('zoomed');
       swiper.allowTouchMove = true;
       this.slide.style.overflowY = 'auto';
     }
-    getDistance(t1, t2) {
-      return Math.sqrt(Math.pow(t2.clientX - t1.clientX, 2) + Math.pow(t2.clientY - t1.clientY, 2));
-    }
+
+    getDistance(t1, t2) { return Math.sqrt(Math.pow(t2.clientX - t1.clientX, 2) + Math.pow(t2.clientY - t1.clientY, 2)); }
     showIndicator(text) {
       globalIndicator.textContent = text;
       globalIndicator.classList.add('show');
@@ -454,9 +423,6 @@
   document.querySelectorAll('.zoomable-container').forEach(container => {
     zoomInstances.set(container, new ImageZoom(container));
   });
-
-  
-  setTimeout(() => { if(swipeHint) swipeHint.style.opacity = '0'; }, 5000);
 </script>
 </body>
 </html>
