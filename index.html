@@ -6,43 +6,114 @@
   <title>송은영 양산시의원 의정보고서</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
-    body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #f0f2f5; display: flex; justify-content: center; align-items: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; overflow: hidden; }
-    .swiper { width: 100%; height: 100%; max-width: 480px; position: relative; background: #fff; transition: max-width 0.4s ease; margin: 0 auto; box-shadow: 0 0 40px rgba(0,0,0,0.2); }
+     
+    body, html { 
+      margin: 0; padding: 0; width: 100%; height: 100%; 
+      background: #f0f2f5; 
+      display: flex; justify-content: center; align-items: center; 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+      overflow: hidden;
+    }
+    
+     
+    .swiper { 
+      width: 100%; height: 100%; 
+      max-width: 480px; 
+      position: relative; 
+      background: #fff; 
+      transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease; 
+      margin: 0 auto;
+      box-shadow: 0 0 40px rgba(0,0,0,0.2);
+    }
+    
+     
     .swiper.full-mode { max-width: 100%; box-shadow: none; }
-    .swiper-slide { width: 100%; height: 100%; overflow-y: auto; background: #fff; -webkit-overflow-scrolling: touch; }
+    
+    .swiper-slide { 
+      width: 100%; height: 100%; 
+      overflow-y: auto; 
+      background: #fff; 
+      -webkit-overflow-scrolling: touch; 
+    }
+    
+     
     .content-wrapper { width: 100%; display: flex; flex-direction: column; padding: 0; margin: 0; }
     
      
-    .image-wrapper, .local-video-card { width: 100%; position: relative; background: #000; line-height: 0; margin-bottom: 25px; }
-    .zoomable-container { width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-    .zoomable-image { max-width: 100%; width: 100%; height: auto; display: block; cursor: zoom-in; }
-    .local-video-container video { width: 100%; height: auto; display: block; }
+    .image-wrapper { width: 100%; position: relative; background: #000; margin: 0; line-height: 0; }
+    .zoomable-container { 
+      width: 100%; min-height: 100vh; 
+      display: flex; justify-content: center; align-items: center; 
+      position: relative; overflow: hidden; 
+    }
+    .zoomable-image { max-width: 100%; width: 100%; height: auto; display: block; cursor: zoom-in; user-select: none; -webkit-user-select: none; }
+    .zoomable-image.zoomed { cursor: grab; }
 
      
-    .yt-card, .shorts-card { width: 100%; margin: 0 0 25px 0; background: #fff; overflow: hidden; border: none; }
-    .yt-title { padding: 20px 15px; font-size: 19px; font-weight: bold; color: #111; border-left: 6px solid #4285f4; line-height: 1.5; background: #fff; }
+    .yt-card, .shorts-card, .local-video-card { 
+      width: 100%; margin: 0 0 30px 0; 
+      background: #fff; overflow: hidden; border: none; 
+    }
+    
+    .yt-title { 
+      padding: 20px 15px; font-size: 19px; font-weight: bold; color: #111; 
+      border-left: 6px solid #4285f4; line-height: 1.5; background: #fff;
+    }
+    
+     
     .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; background: #000; }
     .shorts-container { position: relative; width: 100%; padding-bottom: 177.77%; height: 0; background: #000; }
     .video-container iframe, .shorts-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-    .yt-script, .text-box { width: 100%; box-sizing: border-box; padding: 30px 20px; font-size: 16.5px; line-height: 1.8; color: #333; white-space: pre-wrap; word-break: break-all; }
-    .yt-script { background: #f8f9fa; border-top: 1px solid #eee; }
+    
+     
+    .local-video-container video { width: 100%; height: auto; display: block; background: #000; }
 
      
-    .swiper-button-next, .swiper-button-prev { color: #4285f4; background: rgba(255,255,255,0.9); width: 48px; height: 48px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 100; }
+    .yt-script, .text-box { 
+      width: 100%; box-sizing: border-box; padding: 30px 20px; 
+      font-size: 16.5px; line-height: 1.8; color: #333; 
+      white-space: pre-wrap; word-break: break-all; margin: 0;
+    }
+    .yt-script { background: #f8f9fa; border-top: 1px solid #eee; color: #555; }
+    .html-item { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+
+     
+    .swiper-button-next, .swiper-button-prev { 
+      color: #4285f4; background: rgba(255,255,255,0.9); 
+      width: 50px; height: 50px; border-radius: 50%; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+      transition: opacity 0.3s; z-index: 100;
+    }
     .swiper-button-disabled { opacity: 0 !important; pointer-events: none; }
 
-    #view-toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 9999; width: 50px; height: 50px; background: #4285f4; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; }
+    #view-toggle-btn { 
+      position: fixed; top: 20px; right: 20px; z-index: 9999; 
+      width: 50px; height: 50px; background: #4285f4; color: white; 
+      border-radius: 50%; display: flex; justify-content: center; 
+      align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; 
+    }
+
+     
+    .zoom-indicator { 
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+      background: rgba(0,0,0,0.7); color: white; padding: 12px 20px; 
+      border-radius: 25px; font-size: 14px; z-index: 10000; opacity: 0; 
+      transition: opacity 0.3s; pointer-events: none; 
+    }
+    .zoom-indicator.show { opacity: 1; }
 
     @media (max-width: 768px) {
       #view-toggle-btn { display: none !important; }
       body, html { background: #fff; }
       .swiper { max-width: 100% !important; box-shadow: none; }
+      .swiper-button-next, .swiper-button-prev { width: 44px; height: 44px; }
     }
   </style>
 </head>
 <body>
 
 <div id="view-toggle-btn" title="전체화면 전환">🖥️</div>
+<div class="zoom-indicator" id="globalZoomIndicator">🔍 확대됨</div>
 
 <div class="swiper" id="mainSwiper">
   <div class="swiper-wrapper">
@@ -177,15 +248,14 @@
         <div class="content-wrapper">
                                                     <div class="yt-card"><div class="yt-title">&#34;유쾌한 은영씨&#34; 노래듣기</div>
               
-                                                <div class="local-video-card">
-                <div class="local-video-container">
+                                                                <div class="local-video-container">
                   <video src="https://born520.github.io/report/images/shorts.mp4" controls playsinline loop preload="metadata"></video>
                 </div>
               </div>
-
                               </div>
       </div>
       </div>
+  
   <div class="swiper-button-next"></div>
   <div class="swiper-button-prev"></div>
   <div class="swiper-pagination"></div>
@@ -195,6 +265,7 @@
 <script>
   const swiperElement = document.getElementById('mainSwiper');
   const toggleBtn = document.getElementById('view-toggle-btn');
+  const globalIndicator = document.getElementById('globalZoomIndicator');
   
   if (toggleBtn) {
     toggleBtn.addEventListener('click', function() {
@@ -206,16 +277,129 @@
 
   const swiper = new Swiper('.swiper', {
     direction: 'horizontal',
+    loop: false,
     pagination: { el: '.swiper-pagination', clickable: true },
     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
     on: {
       slideChange: function () {
-        
         document.querySelectorAll('.yt-player').forEach(f => f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'));
         document.querySelectorAll('video').forEach(v => v.pause());
         this.slides[this.activeIndex].scrollTop = 0;
+        
+        document.querySelectorAll('.zoomable-container').forEach(container => {
+          const instance = zoomInstances.get(container);
+          if (instance) instance.reset();
+        });
       },
     },
+  });
+
+  
+  class ImageZoom {
+    constructor(container) {
+      this.container = container;
+      this.image = container.querySelector('.zoomable-image');
+      this.slide = container.closest('.swiper-slide');
+      this.scale = 1; this.posX = 0; this.posY = 0;
+      this.isDragging = false;
+      this.startX = 0; this.startY = 0;
+      this.lastTap = 0;
+      this.minScale = 1; this.maxScale = 4;
+      this.init();
+    }
+    init() {
+      this.container.addEventListener('touchstart', (e) => this.handleTouchStart(e), {passive: false});
+      this.container.addEventListener('touchmove', (e) => this.handleTouchMove(e), {passive: false});
+      this.container.addEventListener('touchend', () => this.handleTouchEnd());
+      this.image.addEventListener('dblclick', (e) => this.toggleZoom(e));
+      this.container.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+      this.container.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+      this.container.addEventListener('mouseup', () => this.handleMouseUp());
+      this.container.addEventListener('wheel', (e) => {
+        if(this.scale > 1 || e.deltaY < 0) {
+          e.preventDefault();
+          this.setScale(this.scale * (e.deltaY > 0 ? 0.9 : 1.1));
+        }
+      }, { passive: false });
+    }
+    handleTouchStart(e) {
+      const now = Date.now();
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        this.touchStartDistance = this.getDistance(e.touches[0], e.touches[1]);
+        swiper.allowTouchMove = false;
+      } else if (e.touches.length === 1) {
+        if (now - this.lastTap < 300) this.toggleZoom(e.touches[0]);
+        this.lastTap = now;
+        if (this.scale > 1) {
+          this.isDragging = true;
+          this.startX = e.touches[0].clientX - this.posX;
+          this.startY = e.touches[0].clientY - this.posY;
+          swiper.allowTouchMove = false;
+        }
+      }
+    }
+    handleTouchMove(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dist = this.getDistance(e.touches[0], e.touches[1]);
+        this.setScale(this.scale * (dist / this.touchStartDistance));
+        this.touchStartDistance = dist;
+      } else if (this.isDragging && this.scale > 1) {
+        this.posX = e.touches[0].clientX - this.startX;
+        this.posY = e.touches[0].clientY - this.startY;
+        this.constrainPosition();
+        this.updateTransform();
+      }
+    }
+    handleTouchEnd() { this.isDragging = false; if (this.scale <= 1) swiper.allowTouchMove = true; }
+    handleMouseDown(e) { if (this.scale > 1) { e.preventDefault(); this.isDragging = true; this.startX = e.clientX - this.posX; this.startY = e.clientY - this.posY; swiper.allowTouchMove = false; } }
+    handleMouseMove(e) { if (this.isDragging) { this.posX = e.clientX - this.startX; this.posY = e.clientY - this.startY; this.constrainPosition(); this.updateTransform(); } }
+    handleMouseUp() { this.isDragging = false; if (this.scale <= 1) swiper.allowTouchMove = true; }
+    toggleZoom(e) {
+      if (this.scale === 1) {
+        this.setScale(2.5);
+        const rect = this.image.getBoundingClientRect();
+        this.posX = (this.container.offsetWidth / 2) - ((e.clientX - rect.left) * 2.5);
+        this.posY = (this.container.offsetHeight / 2) - ((e.clientY - rect.top) * 2.5);
+        this.showIndicator('확대됨');
+      } else { this.reset(); this.showIndicator('원래 크기'); }
+      this.updateTransform();
+    }
+    setScale(s) {
+      this.scale = Math.max(1, Math.min(4, s));
+      if (this.scale > 1) {
+        this.image.classList.add('zoomed');
+        swiper.allowTouchMove = false;
+        this.slide.style.overflowY = 'hidden';
+      } else { this.reset(); }
+      this.updateTransform();
+    }
+    constrainPosition() {
+      const maxX = (this.container.offsetWidth * this.scale - this.container.offsetWidth) / 2;
+      const maxY = (this.container.offsetHeight * this.scale - this.container.offsetHeight) / 2;
+      this.posX = Math.max(-maxX, Math.min(maxX, this.posX));
+      this.posY = Math.max(-maxY, Math.min(maxY, this.posY));
+    }
+    updateTransform() { this.image.style.transform = `translate(${this.posX}px, ${this.posY}px) scale(${this.scale})`; }
+    reset() {
+      this.scale = 1; this.posX = 0; this.posY = 0;
+      this.updateTransform();
+      this.image.classList.remove('zoomed');
+      swiper.allowTouchMove = true;
+      this.slide.style.overflowY = 'auto';
+    }
+    getDistance(t1, t2) { return Math.sqrt(Math.pow(t2.clientX - t1.clientX, 2) + Math.pow(t2.clientY - t1.clientY, 2)); }
+    showIndicator(text) {
+      globalIndicator.textContent = text;
+      globalIndicator.classList.add('show');
+      setTimeout(() => globalIndicator.classList.remove('show'), 1200);
+    }
+  }
+
+  const zoomInstances = new Map();
+  document.querySelectorAll('.zoomable-container').forEach(container => {
+    zoomInstances.set(container, new ImageZoom(container));
   });
 </script>
 </body>
