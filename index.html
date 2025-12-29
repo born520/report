@@ -23,46 +23,50 @@
      
     .image-wrapper { width: 100%; position: relative; background: #000; line-height: 0; }
     .zoomable-container { width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-    .zoomable-image { max-width: 100%; width: 100%; height: auto; display: block; cursor: zoom-in; }
+    .zoomable-image { max-width: 100%; width: 100%; height: auto; display: block; cursor: zoom-in; transition: transform 0.3s ease; }
 
      
-    .yt-card, .shorts-card, .local-video-card { width: 100%; margin: 0 0 30px 0; background: #fff; position: relative; }
-    .yt-title { padding: 20px 15px; font-size: 19px; font-weight: bold; color: #111; border-left: 6px solid #4285f4; line-height: 1.5; }
+    .yt-card, .shorts-card, .local-video-card { width: 100%; margin: 0 0 30px 0; background: #fff; position: relative; overflow: hidden; }
+    .yt-title { padding: 20px 15px; font-size: 19px; font-weight: bold; color: #111; border-left: 6px solid #4285f4; line-height: 1.5; background: #fff; }
     .video-container, .shorts-container { position: relative; width: 100%; background: #000; }
-    .video-container { padding-bottom: 56.25%; }
-    .shorts-container { padding-bottom: 177.77%; }
-    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-container { padding-bottom: 56.25%; }  
+    .shorts-container { padding-bottom: 177.77%; }  
+    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 1; }
 
      
     .video-overlay {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 10; background: rgba(0,0,0,0); display: flex; justify-content: center; align-items: center; cursor: pointer;
+      z-index: 50; background: rgba(0,0,0,0.05);  
+      display: flex; justify-content: center; align-items: center; cursor: pointer;
     }
-    .video-overlay.hidden { display: none; }
-    .video-overlay::after {
-      content: '▶'; font-size: 35px; color: rgba(255,255,255,0.9);
-      background: rgba(255,255,255,0.2);  
-      width: 70px; height: 70px;
-      display: flex; justify-content: center; align-items: center; border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.4);  
-      backdrop-filter: blur(4px);  
+    .video-overlay.hidden { display: none !important; }
+    
+     
+    .play-btn {
+      width: 70px; height: 70px; background: rgba(255, 255, 255, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.5); border-radius: 50%;
+      display: flex; justify-content: center; align-items: center;
+      backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .play-btn::after {
+      content: ''; width: 0; height: 0;
+      border-top: 15px solid transparent; border-bottom: 15px solid transparent;
+      border-left: 22px solid #fff; margin-left: 5px;
     }
 
      
     .swiper-button-next, .swiper-button-prev { 
       color: #4285f4 !important; background: rgba(255,255,255,0.9); 
       width: 48px; height: 48px; border-radius: 50%; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-      z-index: 9999 !important; transform: translateZ(0);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1000 !important;
     }
     .swiper-button-disabled { opacity: 0 !important; pointer-events: none; }
-
-     
-    .yt-script, .text-box { width: 100%; box-sizing: border-box; padding: 30px 20px; font-size: 16.5px; line-height: 1.8; color: #333; white-space: pre-wrap; }
+    .yt-script, .text-box { width: 100%; box-sizing: border-box; padding: 30px 20px; font-size: 16.5px; line-height: 1.8; color: #333; white-space: pre-wrap; background: #fff; }
     .yt-script { background: #f8f9fa; border-top: 1px solid #eee; }
-    #view-toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 10000; width: 50px; height: 50px; background: #4285f4; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     
+    #view-toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 2000; width: 50px; height: 50px; background: #4285f4; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
     @media (max-width: 768px) { #view-toggle-btn { display: none !important; } .swiper { max-width: 100% !important; } }
   </style>
 </head>
@@ -127,10 +131,24 @@
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <div class="yt-card"><div class="yt-title">&#34;유쾌한 은영씨&#34; 노래듣기</div></div>
+                                    <div class="yt-title">&#34;유쾌한 은영씨&#34; 노래듣기</div>
+
                                                 <div class="local-video-card">
-                <div class="local-video-container">
-                  <video src="https://born520.github.io/report/images/shorts.mp4" controls playsinline loop style="width:100%;"></video>
+                <video src="https://born520.github.io/report/images/shorts.mp4" controls playsinline loop style="width:100%;"></video>
+              </div>
+
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="yt-title">[5분 자유발언] 양산시 달빛어린이병원 지정을 위한 제언</div>
+
+                                                <div class="yt-card">
+                <div class="shorts-container">
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/vuusdvx431I?enablejsapi=1&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" allow="autoplay"></iframe>
+                  <div class="video-overlay" onclick="handleVideoClick(this)">
+                    <div class="play-btn"></div>
+                  </div>
                 </div>
               </div>
 
@@ -138,23 +156,14 @@
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <div class="yt-card"><div class="yt-title">[5분 자유발언] 양산시 달빛어린이병원 지정을 위한 제언</div></div>
-                                                <div class="yt-card">
-                <div class="shorts-container">
-                  <iframe class="yt-player" src="https://www.youtube.com/embed/vuusdvx431I?enablejsapi=1&amp;rel=0&amp;playsinline=1"></iframe>
-                  <div class="video-overlay" onclick="handleVideoClick(this)"></div>
-                </div>
-              </div>
+                                    <div class="yt-title">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구</div>
 
-                              </div>
-      </div>
-          <div class="swiper-slide">
-        <div class="content-wrapper">
-                                    <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구</div></div>
                                                 <div class="yt-card">
                 <div class="shorts-container">
-                  <iframe class="yt-player" src="https://www.youtube.com/embed/XmigrRnCtg0?enablejsapi=1&amp;rel=0&amp;playsinline=1"></iframe>
-                  <div class="video-overlay" onclick="handleVideoClick(this)"></div>
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/XmigrRnCtg0?enablejsapi=1&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" allow="autoplay"></iframe>
+                  <div class="video-overlay" onclick="handleVideoClick(this)">
+                    <div class="play-btn"></div>
+                  </div>
                 </div>
               </div>
 
@@ -166,15 +175,19 @@
 
 3. 지역 공예인 및 소상공인 판로 지원
 우수한 기념품을 선정하여 시청 행사, 지역 축제, 공공시설 등에서 판매할 수 있도록 기회를 제공함으로써 지역 경제 활성화의 마중물 역할을 해야 합니다.</div>
+
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <div class="yt-card"><div class="yt-title">[5분 자유발언] 송은영의원_황산공원 일대의 열린관광지 조성 촉구</div></div>
+                                    <div class="yt-title">[5분 자유발언] 송은영의원_황산공원 일대의 열린관광지 조성 촉구</div>
+
                                                 <div class="yt-card">
                 <div class="shorts-container">
-                  <iframe class="yt-player" src="https://www.youtube.com/embed/X8pWWaFYW84?enablejsapi=1&amp;rel=0&amp;playsinline=1"></iframe>
-                  <div class="video-overlay" onclick="handleVideoClick(this)"></div>
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/X8pWWaFYW84?enablejsapi=1&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" allow="autoplay"></iframe>
+                  <div class="video-overlay" onclick="handleVideoClick(this)">
+                    <div class="play-btn"></div>
+                  </div>
                 </div>
               </div>
 
@@ -190,15 +203,19 @@
 
 3. &#39;열린 가게&#39; 인증 등 소프트웨어 강화
 인프라 구축뿐만 아니라 상인과 공무원을 대상으로 관광 약자 응대 교육을 실시하고, &#39;열린 가게&#39; 인증 프로그램을 도입하여 관광 약자가 안심하고 방문할 수 있는 품격 있는 도시를 만들어야 합니다.</div>
+
                               </div>
       </div>
           <div class="swiper-slide">
         <div class="content-wrapper">
-                                    <div class="yt-card"><div class="yt-title">[송은영 의원 5분 자유발언]공공장소 및 다중이용시설의 공공와이파이 서비스 구축촉구</div></div>
+                                    <div class="yt-title">[송은영 의원 5분 자유발언]공공장소 및 다중이용시설의 공공와이파이 서비스 구축촉구</div>
+
                                                 <div class="yt-card">
                 <div class="shorts-container">
-                  <iframe class="yt-player" src="https://www.youtube.com/embed/458hgL5A5cA?enablejsapi=1&amp;rel=0&amp;playsinline=1"></iframe>
-                  <div class="video-overlay" onclick="handleVideoClick(this)"></div>
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/458hgL5A5cA?enablejsapi=1&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" allow="autoplay"></iframe>
+                  <div class="video-overlay" onclick="handleVideoClick(this)">
+                    <div class="play-btn"></div>
+                  </div>
                 </div>
               </div>
 
@@ -213,6 +230,7 @@
 스마트시티 기반 마련: 공공 와이파이는 향후 &#39;스마트 폴&#39; 등 스마트 도시 기반 시설로 확장될 중요한 인프라입니다.
 
 50만 정주 도시, 스마트시티 양산을 위해 적극적인 행정을 당부드립니다. 경청해 주셔서 감사합니다.</div>
+
                               </div>
       </div>
       </div>
@@ -223,10 +241,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
+  
   function handleVideoClick(overlay) {
-    overlay.classList.add('hidden');
+    overlay.style.display = 'none'; 
     const iframe = overlay.parentElement.querySelector('iframe');
     if (iframe && iframe.contentWindow) {
+      
       iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
     }
   }
@@ -237,7 +257,8 @@
     touchStartPreventDefault: false,
     on: {
       slideChange: function () {
-        document.querySelectorAll('.video-overlay').forEach(ov => ov.classList.remove('hidden'));
+        
+        document.querySelectorAll('.video-overlay').forEach(ov => ov.style.display = 'flex');
         document.querySelectorAll('.yt-player').forEach(f => f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'));
         document.querySelectorAll('video').forEach(v => v.pause());
         this.slides[this.activeIndex].scrollTop = 0;
