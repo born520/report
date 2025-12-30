@@ -9,229 +9,346 @@
      
     body, html { 
       margin: 0; padding: 0; width: 100%; height: 100%; 
-      background: #f0f2f5; 
-      display: flex; justify-content: center; align-items: center; 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-      overflow: hidden;
+      background: #f0f2f5; display: flex; justify-content: center; align-items: center; 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow: hidden;
     }
-    
     .swiper { 
-      width: 100%; height: 100%; 
-      max-width: 480px; 
-      position: relative; 
-      background: #fff; 
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 100%; height: 100%; max-width: 480px; position: relative; background: #fff; 
+      margin: 0 auto; box-shadow: 0 0 40px rgba(0,0,0,0.2);
     }
-
-    .swiper-slide {
-      overflow-y: auto;
-      overflow-x: hidden;
-      display: block;
-      -webkit-overflow-scrolling: touch;
-    }
+    .swiper.full-mode { max-width: 100%; box-shadow: none; }
+    .swiper-slide { width: 100%; height: 100%; overflow-y: auto; background: #fff; -webkit-overflow-scrolling: touch; }
+    .content-wrapper { width: 100%; display: flex; flex-direction: column; padding: 0; margin: 0; }
 
      
-    .content-container { width: 100%; display: flex; flex-direction: column; }
-    img { width: 100%; display: block; height: auto; border: none; }
+    .image-wrapper { width: 100%; position: relative; background: #000; line-height: 0; }
+    .zoomable-container { width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+    .zoomable-image { max-width: 100%; width: 100%; height: auto; display: block; cursor: zoom-in; transition: transform 0.3s ease; }
 
      
-    .video-container, .shorts-container { 
-      position: relative; width: 100%; height: 0; background: #000; overflow: hidden;
-    }
+    .yt-card, .shorts-card, .local-video-card { width: 100%; margin: 0 0 30px 0; background: #fff; position: relative; overflow: hidden; }
+    .yt-title { padding: 20px 15px; font-size: 19px; font-weight: bold; color: #111; border-left: 6px solid #4285f4; line-height: 1.5; background: #fff; }
+    .video-container, .shorts-container { position: relative; width: 100%; background: #000; }
     .video-container { padding-bottom: 56.25%; }  
     .shorts-container { padding-bottom: 177.77%; }  
+    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 1; }
 
-    .video-container iframe, .shorts-container iframe { 
-      position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; 
+     
+    .video-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 50; background: rgba(0,0,0,0.05);  
+      display: flex; justify-content: center; align-items: center; cursor: pointer;
+    }
+    .video-overlay.hidden { display: none !important; }
+    
+     
+    .play-btn {
+      width: 70px; height: 70px; background: rgba(255, 255, 255, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.5); border-radius: 50%;
+      display: flex; justify-content: center; align-items: center;
+      backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .play-btn::after {
+      content: ''; width: 0; height: 0;
+      border-top: 15px solid transparent; border-bottom: 15px solid transparent;
+      border-left: 22px solid #fff; margin-left: 5px;
     }
 
      
-    .local-video-card { 
-      width: 100%; background: #000; line-height: 0;
+    .swiper-button-next, .swiper-button-prev { 
+      color: #4285f4 !important; background: rgba(255,255,255,0.9); 
+      width: 48px; height: 48px; border-radius: 50%; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1000 !important;
     }
-    .local-video-container { 
-      width: 100%; 
-      position: relative;
-      aspect-ratio: 16 / 9;  
-      background: #000;
-    }
-    .local-video-container video { 
-      width: 100%; height: 100%; object-fit: contain; 
-    }
+    .swiper-button-disabled { opacity: 0 !important; pointer-events: none; }
+    .yt-script, .text-box { width: 100%; box-sizing: border-box; padding: 30px 20px; font-size: 16.5px; line-height: 1.8; color: #333; white-space: pre-wrap; background: #fff; }
+    .yt-script { background: #f8f9fa; border-top: 1px solid #eee; }
+    
+    #view-toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 2000; width: 50px; height: 50px; background: #4285f4; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-     
-    .indicator {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: rgba(0,0,0,0.6); color: #fff; padding: 8px 16px; border-radius: 20px;
-      font-size: 14px; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.3s;
-    }
-    .indicator.show { opacity: 1; }
-
-     
-    .zoom-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9); z-index: 1000; display: none;
-      justify-content: center; align-items: center; overflow: hidden;
-    }
-    .zoom-overlay img {
-      max-width: 100%; max-height: 100%; transition: transform 0.1s ease-out; cursor: grab;
-    }
-    .zoom-overlay.active { display: flex; }
-    .zoom-overlay img.zoomed { cursor: grabbing; }
+    @media (max-width: 768px) { #view-toggle-btn { display: none !important; } .swiper { max-width: 100% !important; } }
   </style>
 </head>
 <body>
 
-  <div class="swiper">
-    <div class="swiper-wrapper">
-              <div class="swiper-slide">
-          <div class="content-container">
-                                          <img src="https://born520.github.io/report/images/01.jpg" loading="lazy" class="zoomable">
+<div id="view-toggle-btn">🖥️</div>
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                          <img src="https://born520.github.io/report/images/02.jpg" loading="lazy" class="zoomable">
+<div class="swiper" id="mainSwiper">
+  <div class="swiper-wrapper">
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="image-wrapper">
+                <div class="zoomable-container"><img class="zoomable-image" src="https://born520.github.io/report/images/01.jpg" loading="lazy"></div>
+              </div>
+            
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="image-wrapper">
+                <div class="zoomable-container"><img class="zoomable-image" src="https://born520.github.io/report/images/02.jpg" loading="lazy"></div>
+              </div>
+            
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="image-wrapper">
+                <div class="zoomable-container"><img class="zoomable-image" src="https://born520.github.io/report/images/03.jpg" loading="lazy"></div>
+              </div>
+            
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="image-wrapper">
+                <div class="zoomable-container"><img class="zoomable-image" src="https://born520.github.io/report/images/04.jpg" loading="lazy"></div>
+              </div>
+            
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="image-wrapper">
+                <div class="zoomable-container"><img class="zoomable-image" src="https://born520.github.io/report/images/05.jpg" loading="lazy"></div>
+              </div>
+            
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="image-wrapper">
+                <div class="zoomable-container"><img class="zoomable-image" src="https://born520.github.io/report/images/06.jpg" loading="lazy"></div>
+              </div>
+            
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="html-item"><div style='max-width:480px;margin:0 auto;font-family:Apple SD Gothic Neo,sans-serif;background-color:#f5f5f5;padding:10px;'><div style='text-align:center;padding:25px 10px;background-color:#fff;border-radius:12px;margin-bottom:20px;border-top:4px solid #4285f4;'><h2 style='margin:0;font-size:20px;color:#1a1a1a;font-weight:800;'>언론에서 만난 <span style='color:#4285f4;'>송은영</span></h2></div><a href='https://www.yangsanilbo.com/news/articleView.html?idxno=116960' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://raw.githubusercontent.com/born520/report/refs/heads/main/images/news01.png' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>[5분발언] 송은영 "관광약자에게 '닫힌 도시' 양산, 열린 도시로"</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>송은영 양산시의원(국민의힘, 비례)은 황산공원과 물금 상권을 누구나 자유롭게 이용할 수 있는 '무장애 열린관광지'로 조성할 것을 제안했다. 송 의원은 제204회 양산시의회 정례회 제1차 본회의 5분 자유발언에서 '2026년 양산 방문의 해'를 성공적으로 추진하기 위해 장애인, 고령자, 임산부, 영유아 동반 가족 등이 차별 없이 이동하고 체험하며 즐길 수 있는 무장애 관광환경이 반드시 필요하다고 강조했다.</p></div></div></a><a href='https://www.idomin.com/news/articleView.html?idxno=938720' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://raw.githubusercontent.com/born520/report/refs/heads/main/images/news02.png' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>송은영 양산시의원 "황산공원을 열린관광지로"</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>송은영(국민의힘·비례) 양산시의원이 황산공원을 '무장애 열린관광지'로 조성해야 한다고 제안했다. 송 시의원은 2일 열린 제204회 제1차 정례회 5분 발언에 나서 "2026년 양산방문의 해 성공적인 추진을 위해 물금읍 황산공원과 인근 상권을 '무장애 열린관광지'로 조성할 것을 제안한다"며 "황산공원은 양산이 자랑하는 대표적인 수변공원이자 광역권 방문객이 꾸준히 찾는 핵심 관광자원이지만 장애인이나 유모차를 이용한 가족 단위 방문객이 겪는 불편이 매우 크다"고 말했다. </p></div></div></a><a href='https://www.yangsanilbo.com/news/articleView.html?idxno=113317' target='_blank' style='text-decoration:none;color:inherit;'><div style='background-color:white;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);'><div style='width:100%;height:200px;overflow:hidden;'><img src='https://raw.githubusercontent.com/born520/report/refs/heads/main/images/news03.png' alt='뉴스이미지' style='width:100%;height:100%;object-fit:cover;'></div><div style='padding:15px;'><h3 style='margin:0 0 10px 0;font-size:17px;line-height:1.4;color:#111;font-weight:700;'>송은영 의원 “동남권 의료거점도시 표방한다면 ‘달빛어린이병원’부터”</h3><p style='margin:0;font-size:14px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;'>4년 전 운영이 중단된 달빛어린이병원을 조속히 재지정해야 한다는 목소리가 나왔다. 송은영 양산시의원(국민의힘, 비례)은 지난 18일 열린 제202회 제2차 정례회 제3차 본회의에 '양산시 달빛어린이병원 지정을 위한 제안'을 주제로 5분 자유발언을 진행했다.</p></div></div></a></div></div>
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="yt-title">&#34;유쾌한 은영씨&#34; 노래듣기</div>
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                          <img src="https://born520.github.io/report/images/03.jpg" loading="lazy" class="zoomable">
+                                                <div class="local-video-card">
+                <video src="https://born520.github.io/report/images/shorts.mp4" controls playsinline loop style="width:100%;"></video>
+              </div>
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                          <img src="https://born520.github.io/report/images/04.jpg" loading="lazy" class="zoomable">
+                                                <div class="yt-script">유쾌한 은영씨(가사)
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                          <img src="https://born520.github.io/report/images/05.jpg" loading="lazy" class="zoomable">
+오늘도 해는 뜨고
+양산의 하루가 시작돼
+가방 하나 어깨에 메고
+웃음부터 꺼내는 사람
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                          <img src="https://born520.github.io/report/images/06.jpg" loading="lazy" class="zoomable">
+골목 끝, 시장 안, 회의실 불 켜진 밤
+이름을 부르면 들려오는 대답
+“네, 제가 갈게요!”
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                                </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                                                    <div class="local-video-card">
-                  <div class="local-video-container">
-                    <video src="https://born520.github.io/report/images/shorts.mp4" 
-                           controls playsinline loop preload="auto"
-                           poster="https://born520.github.io/report/images/shorts.mp4#t=0.1">
-                    </video>
+숨이 차올라도, 발걸음은 멈추지 않아
+마음처럼 안 될 때도 고개는 다시 들어
+지금 흐르는 이 땀이
+내일의 양산을 바꾼다면
+
+[1절]
+유~쾌한 은영씨! 유~쾌한 은영씨!
+부르면 달려가는 사람
+유~쾌한 은영씨! 유~쾌한 은영씨!
+시민 곁에 서 있는 이름
+
+오늘도, 내일도
+양산을 위해 뛰고 또 뛰는
+유~쾌한 은영씨!
+우리가 부르는 희망의 이름
+
+[2절]
+회의가 길어져 밤이 와도
+현장은 늘 답을 알고 있지
+작은 민원, 작은 목소리
+그게 세상을 움직여
+
+넘어질 듯 흔들려도
+포기란 말은 몰라
+“조금만 더 해볼게요”
+그 말이 힘이 돼
+
+세상은 느리게 변해도
+사람의 마음은 기억해
+진심은 결국 닿는다는 걸
+은영씨는 믿고 있어
+
+유~쾌한 은영씨! 유~쾌한 은영씨!
+언제든 어디든 OK
+유~쾌한 은영씨! 유~쾌한 은영씨!
+시민이 부르면 바로 출동!
+
+힘겨운 하루의 무게를
+조금이나마 덜어주는 사람
+유~쾌한 은영씨!
+양산이 웃는 이유
+
+오늘도 부르면 달려오는 이름
+희망을 싣고 달려오는 사람
+양산의 내일을 믿게 만드는
+유쾌한 은영씨!</div>
+
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="yt-title">[5분 자유발언] 양산시 달빛어린이병원 지정을 위한 제언</div>
+
+                                                <div class="yt-card">
+                <div class="shorts-container">
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/vuusdvx431I?enablejsapi=1&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" allow="autoplay"></iframe>
+                  <div class="video-overlay" onclick="handleVideoClick(this)">
+                    <div class="play-btn"></div>
                   </div>
                 </div>
-                                                        <div class="shorts-container">
-                  <iframe src="https://www.youtube.com/embed/%ec%9c%a0%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8%28%ea%b0%80%ec%82%ac%29%0a%0a%ec%98%a4%eb%8a%98%eb%8f%84%20%ed%95%b4%eb%8a%94%20%eb%9c%a8%ea%b3%a0%0a%ec%96%91%ec%82%b0%ec%9d%98%20%ed%95%98%eb%a3%a8%ea%b0%80%20%ec%8b%9c%ec%9e%91%eb%8f%bc%0a%ea%b0%80%eb%b0%a9%20%ed%95%98%eb%82%98%20%ec%96%b4%ea%b9%a8%ec%97%90%20%eb%a9%94%ea%b3%a0%0a%ec%9b%83%ec%9d%8c%eb%b6%80%ed%84%b0%20%ea%ba%bc%eb%82%b4%eb%8a%94%20%ec%82%ac%eb%9e%8c%0a%0a%ea%b3%a8%eb%aa%a9%20%eb%81%9d,%20%ec%8b%9c%ec%9e%a5%20%ec%95%88,%20%ed%9a%8c%ec%9d%98%ec%8b%a4%20%eb%b6%88%20%ec%bc%9c%ec%a7%84%20%eb%b0%a4%0a%ec%9d%b4%eb%a6%84%ec%9d%84%20%eb%b6%80%eb%a5%b4%eb%a9%b4%20%eb%93%a4%eb%a0%a4%ec%98%a4%eb%8a%94%20%eb%8c%80%eb%8b%b5%0a%e2%80%9c%eb%84%a4,%20%ec%a0%9c%ea%b0%80%20%ea%b0%88%ea%b2%8c%ec%9a%94!%e2%80%9d%0a%0a%ec%88%a8%ec%9d%b4%20%ec%b0%a8%ec%98%ac%eb%9d%bc%eb%8f%84,%20%eb%b0%9c%ea%b1%b8%ec%9d%8c%ec%9d%80%20%eb%a9%88%ec%b6%94%ec%a7%80%20%ec%95%8a%ec%95%84%0a%eb%a7%88%ec%9d%8c%ec%b2%98%eb%9f%bc%20%ec%95%88%20%eb%90%a0%20%eb%95%8c%eb%8f%84%20%ea%b3%a0%ea%b0%9c%eb%8a%94%20%eb%8b%a4%ec%8b%9c%20%eb%93%a4%ec%96%b4%0a%ec%a7%80%ea%b8%88%20%ed%9d%90%eb%a5%b4%eb%8a%94%20%ec%9d%b4%20%eb%95%80%ec%9d%b4%0a%eb%82%b4%ec%9d%bc%ec%9d%98%20%ec%96%91%ec%82%b0%ec%9d%84%20%eb%b0%94%ea%be%bc%eb%8b%a4%eb%a9%b4%0a%0a[1%ec%a0%88]%0a%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%20%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%0a%eb%b6%80%eb%a5%b4%eb%a9%b4%20%eb%8b%ac%eb%a0%a4%ea%b0%80%eb%8a%94%20%ec%82%ac%eb%9e%8c%0a%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%20%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%0a%ec%8b%9c%eb%af%bc%20%ea%b3%81%ec%97%90%20%ec%84%9c%20%ec%9e%88%eb%8a%94%20%ec%9d%b4%eb%a6%84%0a%0a%ec%98%a4%eb%8a%98%eb%8f%84,%20%eb%82%b4%ec%9d%bc%eb%8f%84%0a%ec%96%91%ec%82%b0%ec%9d%84%20%ec%9c%84%ed%95%b4%20%eb%9b%b0%ea%b3%a0%20%eb%98%90%20%eb%9b%b0%eb%8a%94%0a%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%0a%ec%9a%b0%eb%a6%ac%ea%b0%80%20%eb%b6%80%eb%a5%b4%eb%8a%94%20%ed%9d%ac%eb%a7%9d%ec%9d%98%20%ec%9d%b4%eb%a6%84%0a%0a[2%ec%a0%88]%0a%ed%9a%8c%ec%9d%98%ea%b0%80%20%ea%b8%b8%ec%96%b4%ec%a0%b8%20%eb%b0%a4%ec%9d%b4%20%ec%99%80%eb%8f%84%0a%ed%98%84%ec%9e%a5%ec%9d%80%20%eb%8a%98%20%eb%8b%b5%ec%9d%84%20%ec%95%8c%ea%b3%a0%20%ec%9e%88%ec%a7%80%0a%ec%9e%91%ec%9d%80%20%eb%af%bc%ec%9b%90,%20%ec%9e%91%ec%9d%80%20%eb%aa%a9%ec%86%8c%eb%a6%ac%0a%ea%b7%b8%ea%b2%8c%20%ec%84%b8%ec%83%81%ec%9d%84%20%ec%9b%80%ec%a7%81%ec%97%ac%0a%0a%eb%84%98%ec%96%b4%ec%a7%88%20%eb%93%af%20%ed%9d%94%eb%93%a4%eb%a0%a4%eb%8f%84%0a%ed%8f%ac%ea%b8%b0%eb%9e%80%20%eb%a7%90%ec%9d%80%20%eb%aa%b0%eb%9d%bc%0a%e2%80%9c%ec%a1%b0%ea%b8%88%eb%a7%8c%20%eb%8d%94%20%ed%95%b4%eb%b3%bc%ea%b2%8c%ec%9a%94%e2%80%9d%0a%ea%b7%b8%20%eb%a7%90%ec%9d%b4%20%ed%9e%98%ec%9d%b4%20%eb%8f%bc%0a%0a%ec%84%b8%ec%83%81%ec%9d%80%20%eb%8a%90%eb%a6%ac%ea%b2%8c%20%eb%b3%80%ed%95%b4%eb%8f%84%0a%ec%82%ac%eb%9e%8c%ec%9d%98%20%eb%a7%88%ec%9d%8c%ec%9d%80%20%ea%b8%b0%ec%96%b5%ed%95%b4%0a%ec%a7%84%ec%8b%ac%ec%9d%80%20%ea%b2%b0%ea%b5%ad%20%eb%8b%bf%eb%8a%94%eb%8b%a4%eb%8a%94%20%ea%b1%b8%0a%ec%9d%80%ec%98%81%ec%94%a8%eb%8a%94%20%eb%af%bf%ea%b3%a0%20%ec%9e%88%ec%96%b4%0a%0a%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%20%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%0a%ec%96%b8%ec%a0%9c%eb%93%a0%20%ec%96%b4%eb%94%94%eb%93%a0%20OK%0a%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%20%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%0a%ec%8b%9c%eb%af%bc%ec%9d%b4%20%eb%b6%80%eb%a5%b4%eb%a9%b4%20%eb%b0%94%eb%a1%9c%20%ec%b6%9c%eb%8f%99!%0a%0a%ed%9e%98%ea%b2%a8%ec%9a%b4%20%ed%95%98%eb%a3%a8%ec%9d%98%20%eb%ac%b4%ea%b2%8c%eb%a5%bc%0a%ec%a1%b0%ea%b8%88%ec%9d%b4%eb%82%98%eb%a7%88%20%eb%8d%9c%ec%96%b4%ec%a3%bc%eb%8a%94%20%ec%82%ac%eb%9e%8c%0a%ec%9c%a0~%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!%0a%ec%96%91%ec%82%b0%ec%9d%b4%20%ec%9b%83%eb%8a%94%20%ec%9d%b4%ec%9c%a0%0a%0a%ec%98%a4%eb%8a%98%eb%8f%84%20%eb%b6%80%eb%a5%b4%eb%a9%b4%20%eb%8b%ac%eb%a0%a4%ec%98%a4%eb%8a%94%20%ec%9d%b4%eb%a6%84%0a%ed%9d%ac%eb%a7%9d%ec%9d%84%20%ec%8b%a3%ea%b3%a0%20%eb%8b%ac%eb%a0%a4%ec%98%a4%eb%8a%94%20%ec%82%ac%eb%9e%8c%0a%ec%96%91%ec%82%b0%ec%9d%98%20%eb%82%b4%ec%9d%bc%ec%9d%84%20%eb%af%bf%ea%b2%8c%20%eb%a7%8c%eb%93%9c%eb%8a%94%0a%ec%9c%a0%ec%be%8c%ed%95%9c%20%ec%9d%80%ec%98%81%ec%94%a8!?enablejsapi=1&amp;rel=0&amp;playsinline=1" 
-                          allowfullscreen allow="autoplay; encrypted-media"></iframe>
+              </div>
+
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="yt-title">[5분 자유발언] 송은영 의원_관광기념품 홍보관 설치 및 유통 활성화 촉구</div>
+
+                                                <div class="yt-card">
+                <div class="shorts-container">
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/XmigrRnCtg0?enablejsapi=1&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" allow="autoplay"></iframe>
+                  <div class="video-overlay" onclick="handleVideoClick(this)">
+                    <div class="play-btn"></div>
+                  </div>
                 </div>
+              </div>
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                                                          </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                                                                              <div class="shorts-container">
-                  <iframe src="https://www.youtube.com/embed/1.%20%ec%a3%bc%ec%9a%94%20%ea%b1%b0%ec%a0%90%ec%97%90%20%27%ec%83%81%ec%84%a4%20%ed%99%8d%eb%b3%b4%ea%b4%80%20%eb%b0%8f%20%ed%8c%9d%ec%97%85%20%ec%8a%a4%ed%86%a0%ec%96%b4%27%20%ec%a1%b0%ec%84%b1%0a%ec%8b%9c%eb%af%bc%ea%b3%bc%20%ea%b4%80%ea%b4%91%ea%b0%9d%ec%9d%98%20%ec%a0%91%ea%b7%bc%ec%84%b1%ec%9d%b4%20%eb%86%92%ec%9d%80%20%ec%96%91%ec%82%b0%ec%97%ad,%20%eb%ac%bc%ea%b8%88%ec%97%ad,%20%ed%86%b5%eb%8f%84%ec%82%ac,%20%eb%82%a8%eb%b6%80%ec%8b%9c%ec%9e%a5%20%eb%93%b1%ec%97%90%20%ec%96%91%ec%82%b0%20%ec%ba%90%eb%a6%ad%ed%84%b0%ec%99%80%20%ea%b8%b0%eb%85%90%ed%92%88,%20%ed%8a%b9%ec%82%b0%ed%92%88%ec%9d%84%20%ed%95%9c%eb%88%88%ec%97%90%20%eb%b3%b4%ea%b3%a0%20%ea%b5%ac%eb%a7%a4%ed%95%a0%20%ec%88%98%20%ec%9e%88%eb%8a%94%20%eb%b3%b5%ed%95%a9%20%ea%b3%b5%ea%b0%84%ec%9d%84%20%eb%a7%8c%eb%93%a4%ec%96%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.%0a%0a2.%20%ec%98%a8%eb%9d%bc%ec%9d%b8%20%ec%9c%a0%ed%86%b5%20%ec%b2%b4%ea%b3%84%20%ea%b5%ac%ec%b6%95%0a%ec%96%91%ec%82%b0%ec%8b%9c%20%ea%b3%b5%ec%8b%9d%20%ed%99%88%ed%8e%98%ec%9d%b4%ec%a7%80%20%eb%82%b4%ec%97%90%20%ec%a0%84%ec%9a%a9%20%ed%8e%98%ec%9d%b4%ec%a7%80%eb%a5%bc%20%ec%8b%a0%ec%84%a4%ed%95%98%ec%97%ac%20%ec%83%81%ed%92%88%20%ec%86%8c%ea%b0%9c%ec%99%80%20%ed%8c%90%eb%a7%a4%ec%b2%98%20%ec%95%88%eb%82%b4,%20%ea%b7%b8%eb%a6%ac%ea%b3%a0%20%ec%98%a8%eb%9d%bc%ec%9d%b8%20%ea%b5%ac%eb%a7%a4%ea%b0%80%20%ec%a7%81%ec%a0%91%20%ec%97%b0%ea%b2%b0%eb%90%a0%20%ec%88%98%20%ec%9e%88%eb%8a%94%20%ea%b8%b0%eb%8a%a5%ec%9d%84%20%ea%b0%96%ec%b6%94%ec%96%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.%0a%0a3.%20%ec%a7%80%ec%97%ad%20%ea%b3%b5%ec%98%88%ec%9d%b8%20%eb%b0%8f%20%ec%86%8c%ec%83%81%ea%b3%b5%ec%9d%b8%20%ed%8c%90%eb%a1%9c%20%ec%a7%80%ec%9b%90%0a%ec%9a%b0%ec%88%98%ed%95%9c%20%ea%b8%b0%eb%85%90%ed%92%88%ec%9d%84%20%ec%84%a0%ec%a0%95%ed%95%98%ec%97%ac%20%ec%8b%9c%ec%b2%ad%20%ed%96%89%ec%82%ac,%20%ec%a7%80%ec%97%ad%20%ec%b6%95%ec%a0%9c,%20%ea%b3%b5%ea%b3%b5%ec%8b%9c%ec%84%a4%20%eb%93%b1%ec%97%90%ec%84%9c%20%ed%8c%90%eb%a7%a4%ed%95%a0%20%ec%88%98%20%ec%9e%88%eb%8f%84%eb%a1%9d%20%ea%b8%b0%ed%9a%8c%eb%a5%bc%20%ec%a0%9c%ea%b3%b5%ed%95%a8%ec%9c%bc%eb%a1%9c%ec%8d%a8%20%ec%a7%80%ec%97%ad%20%ea%b2%bd%ec%a0%9c%20%ed%99%9c%ec%84%b1%ed%99%94%ec%9d%98%20%eb%a7%88%ec%a4%91%eb%ac%bc%20%ec%97%ad%ed%95%a0%ec%9d%84%20%ed%95%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.?enablejsapi=1&amp;rel=0&amp;playsinline=1" 
-                          allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                                                <div class="yt-script">1. 주요 거점에 &#39;상설 홍보관 및 팝업 스토어&#39; 조성
+시민과 관광객의 접근성이 높은 양산역, 물금역, 통도사, 남부시장 등에 양산 캐릭터와 기념품, 특산품을 한눈에 보고 구매할 수 있는 복합 공간을 만들어야 합니다.
+
+2. 온라인 유통 체계 구축
+양산시 공식 홈페이지 내에 전용 페이지를 신설하여 상품 소개와 판매처 안내, 그리고 온라인 구매가 직접 연결될 수 있는 기능을 갖추어야 합니다.
+
+3. 지역 공예인 및 소상공인 판로 지원
+우수한 기념품을 선정하여 시청 행사, 지역 축제, 공공시설 등에서 판매할 수 있도록 기회를 제공함으로써 지역 경제 활성화의 마중물 역할을 해야 합니다.</div>
+
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="yt-title">[5분 자유발언] 송은영의원_황산공원 일대의 열린관광지 조성 촉구</div>
+
+                                                <div class="yt-card">
+                <div class="shorts-container">
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/X8pWWaFYW84?enablejsapi=1&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" allow="autoplay"></iframe>
+                  <div class="video-overlay" onclick="handleVideoClick(this)">
+                    <div class="play-btn"></div>
+                  </div>
                 </div>
+              </div>
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                                                                              <div class="shorts-container">
-                  <iframe src="https://www.youtube.com/embed/%ec%86%a1%ec%9d%80%ec%98%81%ec%9d%98%203%ea%b0%80%ec%a7%80%20%ed%95%b5%ec%8b%ac%20%ec%a0%9c%ec%96%b8%0a%0a1.%20%ea%b2%bd%eb%82%a8%20%ec%b5%9c%ec%b4%88%20%27%ec%88%98%eb%b3%80%ed%98%95%20%ec%97%b4%eb%a6%b0%20%ea%b4%80%ea%b4%91%ec%a7%80%27%20%ec%a1%b0%ec%84%b1%0a%eb%ac%b8%ed%99%94%ec%b2%b4%ec%9c%a1%ea%b4%80%ea%b4%91%eb%b6%80%20%ea%b3%b5%eb%aa%a8%20%ec%82%ac%ec%97%85%ec%9d%84%20%ed%86%b5%ed%95%b4%20%ea%b5%ad%eb%b9%84%eb%a5%bc%20%ed%99%95%eb%b3%b4%ed%95%98%ea%b3%a0,%20%eb%ac%b4%ec%9e%a5%ec%95%a0%20%eb%b3%b4%ed%96%89%20%ec%9d%b8%ed%94%84%eb%9d%bc,%20%ec%97%b4%eb%a6%b0%20%ed%99%94%ec%9e%a5%ec%8b%a4,%20%ec%8b%9c%ea%b0%81%c2%b7%ec%b2%ad%ea%b0%81%20%ec%9e%a5%ec%95%a0%ec%9d%b8%ec%9a%a9%20%ec%a0%95%eb%b3%b4%20%ec%8b%9c%ec%8a%a4%ed%85%9c%ec%9d%84%20%ea%b5%ac%ec%b6%95%ed%95%98%ec%97%ac%20%ed%99%a9%ec%82%b0%ea%b3%b5%ec%9b%90%ec%9d%84%20%ec%a0%84%ea%b5%ad%ec%a0%81%ec%9d%b8%20%eb%aa%85%ec%86%8c%eb%a1%9c%20%eb%a7%8c%eb%93%a4%ec%96%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.%0a%0a2.%20%eb%ac%bc%ea%b8%88%ec%97%ad~%ed%99%a9%ec%82%b0%ea%b3%b5%ec%9b%90~%ec%83%81%ea%b6%8c%20%27%eb%ac%b4%ec%9e%a5%ec%95%a0%20%eb%8f%99%ec%84%a0%27%20%ea%b5%ac%ec%b6%95%0a%ed%98%84%ec%9e%ac%20%ec%b6%94%ec%a7%84%20%ec%a4%91%ec%9d%b8%20%eb%ac%bc%ea%b8%88%ec%97%ad%20%ec%a6%9d%ec%b6%95%20%eb%b0%8f%20%ec%84%a0%ec%83%81%20%ec%97%b0%ea%b2%b0%20%eb%b3%b4%eb%8f%84%ea%b5%90%20%ec%82%ac%ec%97%85%ea%b3%bc%20%ec%97%b0%ea%b3%84%ed%95%98%ec%97%ac%20%ed%9c%a0%ec%b2%b4%ec%96%b4%ec%99%80%20%ec%9c%a0%eb%aa%a8%ec%b0%a8%ea%b0%80%20%ec%95%88%ec%a0%84%ed%95%98%ea%b2%8c%20%ec%9d%b4%eb%8f%99%ed%95%a0%20%ec%88%98%20%ec%9e%88%eb%8a%94%20%ed%99%98%ea%b2%bd%ec%9d%84%20%eb%a7%8c%eb%93%a4%ec%96%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.%0a%0a%ec%9d%b4%20%eb%8f%99%ec%84%a0%ec%9d%b4%20%ec%9e%90%ec%97%b0%ec%8a%a4%eb%9f%bd%ea%b2%8c%20%eb%ac%bc%ea%b8%88%20%ec%83%81%ea%b6%8c%ea%b9%8c%ec%a7%80%20%ec%9d%b4%ec%96%b4%ec%a7%80%eb%8f%84%eb%a1%9d%20%ec%a0%95%eb%b9%84%ed%95%98%ec%97%ac%20%ec%a7%80%ec%97%ad%20%ea%b2%bd%ec%a0%9c%20%ed%99%9c%ec%84%b1%ed%99%94%eb%a5%bc%20%eb%8f%84%eb%aa%a8%ed%95%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.%0a%0a3.%20%27%ec%97%b4%eb%a6%b0%20%ea%b0%80%ea%b2%8c%27%20%ec%9d%b8%ec%a6%9d%20%eb%93%b1%20%ec%86%8c%ed%94%84%ed%8a%b8%ec%9b%a8%ec%96%b4%20%ea%b0%95%ed%99%94%0a%ec%9d%b8%ed%94%84%eb%9d%bc%20%ea%b5%ac%ec%b6%95%eb%bf%90%eb%a7%8c%20%ec%95%84%eb%8b%88%eb%9d%bc%20%ec%83%81%ec%9d%b8%ea%b3%bc%20%ea%b3%b5%eb%ac%b4%ec%9b%90%ec%9d%84%20%eb%8c%80%ec%83%81%ec%9c%bc%eb%a1%9c%20%ea%b4%80%ea%b4%91%20%ec%95%bd%ec%9e%90%20%ec%9d%91%eb%8c%80%20%ea%b5%90%ec%9c%a1%ec%9d%84%20%ec%8b%a4%ec%8b%9c%ed%95%98%ea%b3%a0,%20%27%ec%97%b4%eb%a6%b0%20%ea%b0%80%ea%b2%8c%27%20%ec%9d%b8%ec%a6%9d%20%ed%94%84%eb%a1%9c%ea%b7%b8%eb%9e%a8%ec%9d%84%20%eb%8f%84%ec%9e%85%ed%95%98%ec%97%ac%20%ea%b4%80%ea%b4%91%20%ec%95%bd%ec%9e%90%ea%b0%80%20%ec%95%88%ec%8b%ac%ed%95%98%ea%b3%a0%20%eb%b0%a9%eb%ac%b8%ed%95%a0%20%ec%88%98%20%ec%9e%88%eb%8a%94%20%ed%92%88%ea%b2%a9%20%ec%9e%88%eb%8a%94%20%eb%8f%84%ec%8b%9c%eb%a5%bc%20%eb%a7%8c%eb%93%a4%ec%96%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.?enablejsapi=1&amp;rel=0&amp;playsinline=1" 
-                          allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                                                <div class="yt-script">송은영의 3가지 핵심 제언
+
+1. 경남 최초 &#39;수변형 열린 관광지&#39; 조성
+문화체육관광부 공모 사업을 통해 국비를 확보하고, 무장애 보행 인프라, 열린 화장실, 시각·청각 장애인용 정보 시스템을 구축하여 황산공원을 전국적인 명소로 만들어야 합니다.
+
+2. 물금역~황산공원~상권 &#39;무장애 동선&#39; 구축
+현재 추진 중인 물금역 증축 및 선상 연결 보도교 사업과 연계하여 휠체어와 유모차가 안전하게 이동할 수 있는 환경을 만들어야 합니다.
+
+이 동선이 자연스럽게 물금 상권까지 이어지도록 정비하여 지역 경제 활성화를 도모해야 합니다.
+
+3. &#39;열린 가게&#39; 인증 등 소프트웨어 강화
+인프라 구축뿐만 아니라 상인과 공무원을 대상으로 관광 약자 응대 교육을 실시하고, &#39;열린 가게&#39; 인증 프로그램을 도입하여 관광 약자가 안심하고 방문할 수 있는 품격 있는 도시를 만들어야 합니다.</div>
+
+                              </div>
+      </div>
+          <div class="swiper-slide">
+        <div class="content-wrapper">
+                                    <div class="yt-title">[송은영 의원 5분 자유발언]공공장소 및 다중이용시설의 공공와이파이 서비스 구축촉구</div>
+
+                                                <div class="yt-card">
+                <div class="shorts-container">
+                  <iframe class="yt-player" src="https://www.youtube.com/embed/458hgL5A5cA?enablejsapi=1&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" allow="autoplay"></iframe>
+                  <div class="video-overlay" onclick="handleVideoClick(this)">
+                    <div class="play-btn"></div>
+                  </div>
                 </div>
+              </div>
 
-                                    </div>
-        </div>
-              <div class="swiper-slide">
-          <div class="content-container">
-                                                                                              <div class="shorts-container">
-                  <iframe src="https://www.youtube.com/embed/%ec%86%a1%ec%9d%80%ec%98%81%ec%9d%98%204%ea%b0%80%ec%a7%80%20%ed%95%b5%ec%8b%ac%20%ec%a0%9c%ec%96%b8%0a%0a%ea%b4%80%ea%b4%91%ec%a7%80%20%ed%99%95%eb%8c%80%20%ec%84%a4%ec%b9%98:%20%ec%96%91%ec%82%b0%208%ea%b2%bd%20%eb%93%b1%20%ec%a3%bc%ec%9a%94%20%ea%b4%80%ea%b4%91%ec%a7%80%ec%97%90%20%ea%b3%b5%ea%b3%b5%20%ec%99%80%ec%9d%b4%ed%8c%8c%ec%9d%b4%eb%a5%bc%20%ea%b5%ac%ec%b6%95%ed%95%98%ec%97%ac%20%ea%b4%80%ea%b4%91%ea%b0%9d%ea%b3%bc%20%ec%8b%9c%eb%af%bc%ec%9d%98%20%ed%8e%b8%ec%9d%98%eb%a5%bc%20%eb%86%92%ec%97%ac%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.%0a%0a%ed%99%8d%eb%b3%b4%20%eb%b0%8f%20%ec%95%88%eb%82%b4%20%ea%b0%95%ed%99%94:%20%ec%96%b4%eb%a6%b0%ec%9d%b4%ec%99%80%20%ec%96%b4%eb%a5%b4%ec%8b%a0%20%eb%93%b1%20%eb%94%94%ec%a7%80%ed%84%b8%20%ec%95%bd%ec%9e%90%ea%b0%80%20%ec%89%bd%ea%b2%8c%20%ec%95%8c%20%ec%88%98%20%ec%9e%88%eb%8f%84%eb%a1%9d%20%ed%99%8d%eb%b3%b4%20%ec%8a%a4%ed%8b%b0%ec%bb%a4%20%eb%b6%80%ec%b0%a9%ea%b3%bc%20%ec%95%88%eb%82%b4%ed%8c%90%20%ea%b4%80%eb%a6%ac%eb%a5%bc%20%ec%b2%a0%ec%a0%80%ed%9e%88%20%ed%95%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.%0a%0a%ec%b2%a0%ec%a0%80%ed%95%9c%20%ec%9c%a0%ec%a7%80%20%eb%b3%b4%ec%88%98:%20%eb%b6%84%ea%b8%b0%eb%b3%84%20%ed%98%84%ec%9e%a5%20%ec%a0%90%ea%b2%80%ec%9d%84%20%ed%86%b5%ed%95%b4%20%ec%9d%b4%ec%9a%a9%20%eb%b6%88%ed%8e%b8%ec%9d%84%20%ec%b5%9c%ec%86%8c%ed%99%94%ed%95%98%ea%b3%a0%20%ea%b2%80%ec%83%89%20%ec%84%9c%eb%b9%84%ec%8a%a4%eb%a5%bc%20%ea%b0%9c%ec%84%a0%ed%95%b4%ec%95%bc%20%ed%95%a9%eb%8b%88%eb%8b%a4.%0a%0a%ec%8a%a4%eb%a7%88%ed%8a%b8%ec%8b%9c%ed%8b%b0%20%ea%b8%b0%eb%b0%98%20%eb%a7%88%eb%a0%a8:%20%ea%b3%b5%ea%b3%b5%20%ec%99%80%ec%9d%b4%ed%8c%8c%ec%9d%b4%eb%8a%94%20%ed%96%a5%ed%9b%84%20%27%ec%8a%a4%eb%a7%88%ed%8a%b8%20%ed%8f%b4%27%20%eb%93%b1%20%ec%8a%a4%eb%a7%88%ed%8a%b8%20%eb%8f%84%ec%8b%9c%20%ea%b8%b0%eb%b0%98%20%ec%8b%9c%ec%84%a4%eb%a1%9c%20%ed%99%95%ec%9e%a5%eb%90%a0%20%ec%a4%91%ec%9a%94%ed%95%9c%20%ec%9d%b8%ed%94%84%eb%9d%bc%ec%9e%85%eb%8b%88%eb%8b%a4.%0a%0a50%eb%a7%8c%20%ec%a0%95%ec%a3%bc%20%eb%8f%84%ec%8b%9c,%20%ec%8a%a4%eb%a7%88%ed%8a%b8%ec%8b%9c%ed%8b%b0%20%ec%96%91%ec%82%b0%ec%9d%84%20%ec%9c%84%ed%95%b4%20%ec%a0%81%ea%b7%b9%ec%a0%81%ec%9d%b8%20%ed%96%89%ec%a0%95%ec%9d%84%20%eb%8b%b9%eb%b6%80%eb%93%9c%eb%a6%bd%eb%8b%88%eb%8b%a4.%20%ea%b2%bd%ec%b2%ad%ed%95%b4%20%ec%a3%bc%ec%85%94%ec%84%9c%20%ea%b0%90%ec%82%ac%ed%95%a9%eb%8b%88%eb%8b%a4.?enablejsapi=1&amp;rel=0&amp;playsinline=1" 
-                          allowfullscreen allow="autoplay; encrypted-media"></iframe>
-                </div>
+                                                <div class="yt-script">송은영의 4가지 핵심 제언
 
-                                    </div>
-        </div>
-          </div>
-    <div class="indicator" id="pageIndicator"></div>
-  </div>
+관광지 확대 설치: 양산 8경 등 주요 관광지에 공공 와이파이를 구축하여 관광객과 시민의 편의를 높여야 합니다.
 
-  <div class="zoom-overlay" id="zoomOverlay">
-    <img src="" id="zoomImage">
-  </div>
+홍보 및 안내 강화: 어린이와 어르신 등 디지털 약자가 쉽게 알 수 있도록 홍보 스티커 부착과 안내판 관리를 철저히 해야 합니다.
 
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script>
-    const swiper = new Swiper('.swiper', {
-      direction: 'vertical',
-      mousewheel: true,
-      touchStartPreventDefault: false,
-      on: {
-        init: function() { updateIndicator(this); },
-        slideChange: function() { 
-          updateIndicator(this);
-          
-          document.querySelectorAll('video').forEach(v => v.pause());
-          document.querySelectorAll('iframe').forEach(f => {
-            const src = f.src;
-            f.src = src;
-          });
-        }
-      }
-    });
+철저한 유지 보수: 분기별 현장 점검을 통해 이용 불편을 최소화하고 검색 서비스를 개선해야 합니다.
 
-    function updateIndicator(s) {
-      const el = document.getElementById('pageIndicator');
-      el.textContent = `${s.activeIndex + 1} / ${s.slides.length}`;
-      el.classList.add('show');
-      clearTimeout(el.timer);
-      el.timer = setTimeout(() => el.classList.remove('show'), 2000);
+스마트시티 기반 마련: 공공 와이파이는 향후 &#39;스마트 폴&#39; 등 스마트 도시 기반 시설로 확장될 중요한 인프라입니다.
+
+50만 정주 도시, 스마트시티 양산을 위해 적극적인 행정을 당부드립니다. 경청해 주셔서 감사합니다.</div>
+
+                              </div>
+      </div>
+      </div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-pagination"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  
+  function handleVideoClick(overlay) {
+    overlay.style.display = 'none'; 
+    const iframe = overlay.parentElement.querySelector('iframe');
+    if (iframe && iframe.contentWindow) {
+      
+      iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
     }
+  }
 
-    // 이미지 줌 기능 (터치 줌 대응)
-    const overlay = document.getElementById('zoomOverlay');
-    const zoomImg = document.getElementById('zoomImage');
-    
-    document.querySelectorAll('.zoomable').forEach(img => {
-      img.addEventListener('click', () => {
-        zoomImg.src = img.src;
-        overlay.classList.add('active');
-        zoomManager.reset();
-      });
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if(e.target === overlay) overlay.classList.remove('active');
-    });
-
-    
-    const zoomManager = {
-      scale: 1, posX: 0, posY: 0,
-      reset() {
-        this.scale = 1; this.posX = 0; this.posY = 0;
-        zoomImg.style.transform = `translate(0,0) scale(1)`;
+  const swiper = new Swiper('.swiper', {
+    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    pagination: { el: '.swiper-pagination', clickable: true },
+    touchStartPreventDefault: false,
+    on: {
+      slideChange: function () {
+        
+        document.querySelectorAll('.video-overlay').forEach(ov => ov.style.display = 'flex');
+        document.querySelectorAll('.yt-player').forEach(f => f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'));
+        document.querySelectorAll('video').forEach(v => v.pause());
+        this.slides[this.activeIndex].scrollTop = 0;
       }
-    };
-  </script>
+    }
+  });
+
+  document.getElementById('view-toggle-btn').addEventListener('click', function() {
+    const isFull = document.getElementById('mainSwiper').classList.toggle('full-mode');
+    this.innerText = isFull ? '📱' : '🖥️';
+    setTimeout(() => { swiper.update(); }, 400);
+  });
+
+  class ImageZoom {
+    constructor(container) {
+      this.container = container;
+      this.image = container.querySelector('.zoomable-image');
+      this.scale = 1;
+      this.init();
+    }
+    init() {
+      this.image.addEventListener('dblclick', () => this.toggleZoom());
+      this.container.addEventListener('touchstart', (e) => { if(e.touches.length === 2) swiper.allowTouchMove = false; });
+      this.container.addEventListener('touchend', () => { if(this.scale <= 1) swiper.allowTouchMove = true; });
+    }
+    toggleZoom() {
+      this.scale = (this.scale === 1) ? 2.5 : 1;
+      this.image.style.transform = (this.scale === 2.5) ? `scale(2.5)` : `none`;
+      swiper.allowTouchMove = (this.scale === 1);
+    }
+  }
+  document.querySelectorAll('.zoomable-container').forEach(c => new ImageZoom(c));
+</script>
 </body>
 </html>
