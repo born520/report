@@ -34,14 +34,16 @@
     iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 1; }
 
      
+    .local-video-container { width: 100%; background: #000; line-height: 0; position: relative; aspect-ratio: 16 / 9; }
+    .local-video-container video { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+     
     .video-overlay {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 50; background: rgba(0,0,0,0.05);  
+      z-index: 50; background: rgba(0,0,0,0.05);
       display: flex; justify-content: center; align-items: center; cursor: pointer;
     }
-    .video-overlay.hidden { display: none !important; }
     
-     
     .play-btn {
       width: 70px; height: 70px; background: rgba(255, 255, 255, 0.25);
       border: 2px solid rgba(255, 255, 255, 0.5); border-radius: 50%;
@@ -134,7 +136,9 @@
                                     <div class="yt-title">&#34;유쾌한 은영씨&#34; 노래듣기</div>
 
                                                 <div class="local-video-card">
-                <video src="https://born520.github.io/report/images/shorts.mp4" controls playsinline loop style="width:100%;"></video>
+                <div class="local-video-container">
+                  <video src="https://born520.github.io/report/images/shorts.mp4#t=0.1" controls playsinline loop preload="auto"></video>
+                </div>
               </div>
 
                                                 <div class="yt-script">유쾌한 은영씨(가사)
@@ -299,12 +303,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-  
   function handleVideoClick(overlay) {
-    overlay.style.display = 'none'; 
+    overlay.style.display = 'none';
     const iframe = overlay.parentElement.querySelector('iframe');
     if (iframe && iframe.contentWindow) {
-      
       iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
     }
   }
@@ -315,7 +317,6 @@
     touchStartPreventDefault: false,
     on: {
       slideChange: function () {
-        
         document.querySelectorAll('.video-overlay').forEach(ov => ov.style.display = 'flex');
         document.querySelectorAll('.yt-player').forEach(f => f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'));
         document.querySelectorAll('video').forEach(v => v.pause());
